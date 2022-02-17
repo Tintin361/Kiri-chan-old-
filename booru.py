@@ -1,3 +1,4 @@
+# Unfinished
 from pybooru import Moebooru
 
 safe = Moebooru('safebooru')
