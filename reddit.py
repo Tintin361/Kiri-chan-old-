@@ -9,9 +9,10 @@ PASSWORD = not_important.reddit_password
 reddit = praw.Reddit(
   client_id=CLIENT_ID,
   client_secret=CLIENT_SECRET,
-  user_agent="discord:kirlia-chan-bot:v0.4.10 (by /u/tintin361yt)",
+  user_agent="discord.py:kirlia-chan-bot:v1.1.1_beta (by u/tintin361yt)",
   username="Kirlia-chan",
-  password=PASSWORD)
+  password=PASSWORD,
+  check_for_async=False)
   
 def last_post(sub):
   subreddit = reddit.subreddit(sub)
@@ -20,8 +21,14 @@ def last_post(sub):
     title = submission.title
     url = submission.url
     sub_title = subreddit.display_name
+    id = submission.id
+
+    if submission.over_18:
+      nsfw = "True"
+    else:
+      nsfw = "False"
     
-  return title, url, sub_title
+  return title, url, sub_title, id, nsfw
   
 def hot_post(sub):
   subreddit = reddit.subreddit(sub)
@@ -32,18 +39,54 @@ def hot_post(sub):
     title = submission.title
     url = submission.url
     sub_title = subreddit.display_name
+    id = subreddit.id
     i = i + 1
     if i == stop_number:
-      return title, url, sub_title
+      if submission.over_18:
+        nsfw = "True"
+      else:
+        nsfw = "False"
+
+      return title, url, sub_title, id, nsfw
 
 def fake_history():
   subreddit = reddit.subreddit("fakehistoryporn")
-  stop_number = random.randint(0, 100)
+  stop_number = random.randint(0, 50)
   i = 0
 
   for submission in subreddit.hot(limit=1000):
     title = submission.title
     url = submission.url
+    id = submission.id
     i = i + 1
     if i == stop_number:
-      return title, url
+      return title, url, id
+
+def get(sub):
+  subreddit = reddit.subreddit(sub)
+  stop_number = random.randint(0, 30)
+  i = 0
+
+  for submission in subreddit.hot(limit=1000):
+    title = submission.title
+    url = submission.url
+    id = submission.id
+    i = i + 1
+    if i == stop_number:
+      return title, url, id
+
+def upvote(post):
+  submission = reddit.submission(id=post)
+  try:
+    submission.upvote()
+  except:
+    return "False"
+  return score(post)
+
+def score(post):
+  sub = reddit.submission(id=post)
+  try:
+    score = sub.score
+    return str(score)
+  except:
+    return "Null"

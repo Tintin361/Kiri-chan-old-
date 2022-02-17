@@ -1,0 +1,13 @@
+{"intents": [
+    {"tag": "salutations",
+     "patterns": ["Salut", "Hello", "Comment ça va ?", "Y'a quelqu'un ?", "Bonjour", "Hey", "Quoi de neuf ?"],
+     "responses": ["Hello !", "Coucou", "Salut, comment je peux t'aider ?"],
+     "context_set": ""
+    },
+    {"tag": "au revoir",
+     "patterns": ["A un de ces quatre", "A plus tard", "Au revoir", "Je dois y aller", "Bonne journée", "bye"],
+     "responses": [":(", "Reviens rapidament", "Goodbye!"],
+     "context_set": ""
+    }
+    ]
+}
