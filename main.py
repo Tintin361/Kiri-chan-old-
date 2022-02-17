@@ -571,7 +571,7 @@ async def pfc_function(ctx, result):
         pass
 
 
-# Delete Function
+# Delete Messages Function
 @bot.command(name="deleteMessage", aliases=['dlt', 'deletemessage', 'delete'])
 async def delete(ctx, id):
     if ctx.author.id not in listmod:
@@ -587,14 +587,16 @@ async def delete(ctx, id):
     await message.delete()
 
 
-# Imgflip functions
+# Imgflip functions - Unfinished
 # @bot.command(name="")
 
 
-# Upscale images functions
-@bot.command(name="upscale")
-async def upscale_image(ctx, x, y):
-    image = ctx.message.attachments[0]
+# Upscale images functions - Unfinished
+# @bot.command(name="upscale")
+# async def upscale_image(ctx, x, y):
+    # image = ctx.message.attachments[0]
+
+
     
 
 
@@ -685,6 +687,7 @@ async def helpOutils(ctx):
     embedMsg.add_field(name="-ping", value="Affiche la latence")
     embedMsg.add_field(name="-info", value="Obtiens des infos sur moi")
     embedMsg.add_field(name="-version", value="Obtiens le numéro de version")
+    embedMsg.add_field(name="-github", value="Lien vers le repo sur GitHub.")
 
     await ctx.channel.send(embed=embedMsg)
 
@@ -811,25 +814,11 @@ async def mpSet(ctx, arg):
         await ctx.message.send("Tu n'a pas le droit d'envoyer un MP...")
 
 
-# Send a message to all servers in info channel | Not Working
-@bot.command(name="sysMsg")
-async def sysMsg(ctx, *msg):
-    await ctx.message.delete()
-    if ctx.message.author.id == 443113150599004161:
-        message = ' '.join(str(i) for i in msg)
-        for guild in client.guilds: # Guild stands for server
-            for channel in guild.channels:
-                if isinstance(channel, discord.system_channel()):
-                    await channel.send(message)
-    else:
-        await ctx.message.send("Tu n'a pas l'autorisation pour cette commande.")
-
-
 # Commands for Minecraft Server
 @bot.command(name="getRole", aliases=['getrole', 'gr'])
 async def getRole(ctx, role_name):
     await ctx.message.delete()
-    list_of_non_roles = ["Modo", "Kirlia-chan", "Bots", "YAGPDB.xyz"]
+    list_of_non_roles = ["Modoux", "Kirlia-chan", "Bots"]
 
     guild = ctx.guild
     member = ctx.message.author
@@ -868,6 +857,13 @@ async def createRole(ctx, *roleName):
     if ctx.message.author.id in listmod:
         content = ' '.join(roleName)
         await ctx.guild.create_role(name=content)
+
+
+# Github repo
+@bot.command(name="github", aliases=['GitHub', 'Github', 'gitHub'])
+async def gif(ctx):
+    await ctx.message.delete()
+    await ctx.send("Lien vers le repo GitHub:\nhttps://github.com/Tintin361/Kiri-chan")
 
 
 # Command error event
