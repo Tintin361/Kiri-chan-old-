@@ -24,7 +24,7 @@ safebooru_password = not_important.reddit_password
 client = discord.Client
 bot = commands.Bot(command_prefix="-", help_command=None)
 
-ver = "1.2.1"
+ver = "1.2.2"
 user_id = 443113150599004161
 listmod = list_of_things.rlist()
 online_message = "des tonnes d'octets"
@@ -557,7 +557,7 @@ async def help(ctx):
     embedMsg.add_field(name="Musiques", value="-helpMusic", inline=False)
     embedMsg.add_field(name="Sites Web", value="-helpWeb", inline=False)
     embedMsg.add_field(name="Features", value="-helpFeatures", inline=False)
-    embedMsg.add_field(name="Outils", value="-helpOutils", inline=False)
+    embedMsg.add_field(name="Outils", value="-helpTools", inline=False)
     embedMsg.add_field(name="Administratif", value="-helpAdmin", inline=False)
 
     await ctx.channel.send(embed=embedMsg)
@@ -618,7 +618,7 @@ async def helpFeatures(ctx):
 
     await ctx.channel.send(embed=embedMsg)
 
-@bot.command()
+@bot.command(name="helpOutils", aliases=['helpTools'])
 async def helpOutils(ctx):
     await ctx.message.delete()
 
