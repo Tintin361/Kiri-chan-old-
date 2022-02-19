@@ -1,6 +1,5 @@
 from __future__ import unicode_literals
 from ast import alias
-import pstats
 from unicodedata import name
 import discord
 from discord import voice_client
@@ -18,7 +17,6 @@ import yt_dlp as youtube_dl
 import twitter as tw
 import os.path, platform
 import validators
-import subprocess
 
 DISCORD_TOKEN = not_important.bot_token
 safebooru_password = not_important.reddit_password
@@ -26,7 +24,7 @@ safebooru_password = not_important.reddit_password
 client = discord.Client
 bot = commands.Bot(command_prefix="-", help_command=None)
 
-ver = "1.2"
+ver = "1.2.1"
 user_id = 443113150599004161
 listmod = list_of_things.rlist()
 online_message = "des tonnes d'octets"
@@ -466,7 +464,7 @@ async def segs(ctx):
     
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="SEEEEEEEGGGGSSS !!!!"))
     channel = ctx.message.author.voice.channel
-    global voice
+    global voiceS
     voice = await channel.connect()
     if voice.is_playing():
         voice.stop()
@@ -517,47 +515,12 @@ async def timeline(ctx):
             await ctx.send(f"{user}:\n{content}")
 
 
-# Pyboory function | Safebooru
+# Pybooru function | Safebooru
 @bot.command(name='safebooru')
 async def safe_search(ctx, search="default"):
     #result = booru.search_safebooru(search)
     #await ctx.send(result)
     pass
-
-
-# Games Section
-@bot.command(name='pierreFeuilleCiseau', aliases=['pierrePapierCiseau', 'pfc', 'ppc'])
-async def pfc_function(ctx, result):
-    pierre_aliases = ["pierre", "p"]
-    feuille_aliases = ["feuille", "f", "papier"]
-    ciseau_aliases = ["ciseau", "c"]
-
-    number = random.randint(1, 297)
-    player_value = None
-    bot_value = None
-    win_value = None
-
-    if result.lower() in pierre_aliases:
-        player_value = "rock"
-    elif result.lower() in feuille_aliases:
-        player_value = "paper"
-    elif result.lower() in ciseau_aliases:
-        player_value = "scissors"
-    else:
-        await ctx.send("Désolé, je n'ai pas reconnu ce que tu veux dire")
-        return False
-
-    if number % 3 == 0:
-        bot_value = "paper"
-    elif number % 3 == 1:
-        bot_value = "scissors"
-    elif number % 3 == 2:
-        bot_value = "rock"
-
-    if player_value == bot_value:
-        win_value = "Égalité"
-    else:
-        pass
 
 
 # Delete Messages Function
@@ -579,14 +542,10 @@ async def delete(ctx, id):
 # Imgflip functions - Unfinished
 # @bot.command(name="")
 
-
 # Upscale images functions - Unfinished
 # @bot.command(name="upscale")
 # async def upscale_image(ctx, x, y):
     # image = ctx.message.attachments[0]
-
-
-    
 
 
 # Help functions
@@ -598,7 +557,6 @@ async def help(ctx):
     embedMsg.add_field(name="Musiques", value="-helpMusic", inline=False)
     embedMsg.add_field(name="Sites Web", value="-helpWeb", inline=False)
     embedMsg.add_field(name="Features", value="-helpFeatures", inline=False)
-    embedMsg.add_field(name="Salon Vocal", value="-helpVocal", inline=False)
     embedMsg.add_field(name="Outils", value="-helpOutils", inline=False)
     embedMsg.add_field(name="Administratif", value="-helpAdmin", inline=False)
 
@@ -630,6 +588,7 @@ async def helpMusic(ctx):
     embedMsg.add_field(name="-pause", value="Met en pause la musique")
     embedMsg.add_field(name="-stop", value="Arrête la musique en cours")
     embedMsg.add_field(name="-resume", value="Reprends la musique là où tu l'avais arrêtée")
+    embedMsg.add_field(name="-cheh", value="Quand le karma est contre toi...")
     embedMsg.add_field(name="-dream", value="Joue la musique de Dream dans un salon vocal")
     embedMsg.add_field(name="-segs", value="SEEEEEGGGGGGSSS !")
     embedMsg.add_field(name="-disconnect", value="Je quitte le salon vocal")
@@ -660,15 +619,6 @@ async def helpFeatures(ctx):
     await ctx.channel.send(embed=embedMsg)
 
 @bot.command()
-async def helpVocal(ctx):
-    await ctx.message.delete()
-
-    embedMsg = discord.Embed(title="Salon Vocal", description="Liste des commandes pour les salon vocaux", color=0x0048ff)
-    embedMsg.add_field(name="-cheh", value="Quand le karma est contre toi...")
-
-    await ctx.channel.send(embed=embedMsg)
-
-@bot.command()
 async def helpOutils(ctx):
     await ctx.message.delete()
 
@@ -687,7 +637,6 @@ async def helpAdmin(ctx):
     embedMsg = discord.Embed(title="Admin", description="Liste des commandes uniquement pour les modérateurs", color=0xff00fa)
     embedMsg.add_field(name="-mpSet [ID utilisateur]", value="Permet de définir à qui j'envoie le Message Privé")
     embedMsg.add_field(name="-mp [contenu du message]", value="J'envoie le contenu de ton message")
-    embedMsg.add_field(name="-sysMsg", value="Envoie un message sur tous")
     embedMsg.add_field(name="-join", value="Je rejoins le salon vocal dans lequel tu est connecté")
     embedMsg.add_field(name="-online [type] [message]", value="Je suis connectée")
     embedMsg.add_field(name="-idle [type] [message]", value="Je deviens inactive")
@@ -719,7 +668,7 @@ async def informations(ctx):
 async def version(ctx):
     global ver
     await ctx.message.delete()
-    await ctx.send(f"Je suis en version {ver}")
+    await ctx.send(f"Je suis en version {ver} !")
 
 
 @bot.command(name="online")
@@ -730,7 +679,7 @@ async def online(ctx, activity="watch", message=online_message):
         return
     
     activity = activity.lower()
-    if activity == "watch":
+    if activity == "watch" or activity == "watching":
         await bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.watching, name=message))
     elif activity == "listen":
         await bot.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening, name=message))
@@ -745,7 +694,7 @@ async def idle(ctx, activity="watch", message="Splatoon 2 ou à Pokémon"):
         return
     
     activity = activity.lower()
-    if activity == "watch":
+    if activity == "watch" or activity == "watching":
         await bot.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.watching, name=message))
     elif activity == "listen":
         await bot.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.listening, name=message))
@@ -760,7 +709,7 @@ async def dnd(ctx, activity="watch", message="un anime (c\'est sympa Assassinati
         return
     
     activity = activity.lower()
-    if activity == "watch":
+    if activity == "watch" or activity == "watching":
         await bot.change_presence(status=discord.Status.do_not_disturb, activity=discord.Activity(type=discord.ActivityType.watching, name=message))
     elif activity == "listen":
         await bot.change_presence(status=discord.Status.do_not_disturb, activity=discord.Activity(type=discord.ActivityType.listening, name=message))
