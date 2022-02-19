@@ -17,6 +17,7 @@ import random
 import yt_dlp as youtube_dl
 import twitter as tw
 import os.path, platform
+import validators
 import subprocess
 
 DISCORD_TOKEN = not_important.bot_token
@@ -25,7 +26,7 @@ safebooru_password = not_important.reddit_password
 client = discord.Client
 bot = commands.Bot(command_prefix="-", help_command=None)
 
-ver = "1.1.1 beta"
+ver = "1.2"
 user_id = 443113150599004161
 listmod = list_of_things.rlist()
 online_message = "des tonnes d'octets"
@@ -80,6 +81,21 @@ def get_video_id(url, opts):
         video_id = infos.get("id", None)
         video_title = infos.get("title", None)
         return video_id, video_title
+
+def get_video_data(content, format, is_query):
+    with youtube_dl.YoutubeDL(format) as ydl:
+        if is_query:
+            infos = ydl.extract_info(f"ytsearch:{content}", download=False)['entries'][0]
+            id = infos.get("id", None)
+            title = infos.get("title", None)
+            url = infos.get("video_url", None)
+            return id, title
+        else:
+            infos = ydl.extract_info(content, download=False)
+            id = infos.get("id", None)
+            title = infos.get("title", None)
+            return id, title
+        
 
 def youtube_audio_downloader(url, format):
     if format == "mp3":
@@ -178,11 +194,8 @@ async def poyo(ctx):
 async def cheh(ctx):
     await ctx.message.delete()
     channel = ctx.message.author.voice.channel
-    try:
-        global voice
-        voice = await channel.connect()
-    except:
-        pass
+    global voice
+    voice = await channel.connect()
     if voice.is_playing():
         voice.stop()
     voice.play(discord.FFmpegPCMAudio(f"{save_path}cheh.mp3"))
@@ -387,34 +400,44 @@ async def dlYoutube(ctx, url, format="mp3"):
     else:
         await ctx.send(f"Voici l'URL du fichier: http://91.174.152.111:35080/youtube_audios/{video_id}.{format}")
 
-# Same as dlYoutube but play it in voice channel
-@bot.command()
-async def playBeta(ctx, url, preload=False):
+# New One
+@bot.command(name="play")
+async def playBeta(ctx, *content):
     await ctx.message.delete()
+    query = ' '.join(content)
 
-    video_id = get_video_id(url, ydl_mp3)
-    file_exist = os.path.exists(f"{video_save_path}{video_id}.mp3")
-    
+    search_msg = await ctx.send("<a:search:944484192018903060> Recherche de la vidéo sur YouTube en cours...")
+
+    check_url = validators.url(query)
+    if check_url == True:
+        id, title = get_video_data(query, ydl_mp3, False)
+        url = query
+    else:
+        id, title = get_video_data(query, ydl_mp3, True)
+        url = f"https://www.youtube.com/watch?v={id}"
+        
+    thumbnail = f"(https://i.ytimg.com/vi/{id}/maxresdefault.jpg)"
+    await search_msg.delete()
+    file_exist = os.path.exists(f"{save_path}{id}.mp3")
     if file_exist == False:
-        command = f'yt-dlp --extract-audio --audio-format mp3 --output "/var/www/html/youtube_audios/%(id)s.%(ext)s" {url}'
-        subprocess.call(command, shell=False)
+        message = await ctx.send(f"Téléchargement et conversion de la vidéo:\n**{title}**\nJe ne suis pas encore multi-tâche donc je ne serais plus disponible.\n{thumbnail}")
+        youtube_audio_downloader(url, "mp3")
+        await message.delete()
 
-    if preload == True:
-        await ctx.send("La vidéo a bien été préchargée.")
-        return
-
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="de la musique sur un serveur."))
     channel = ctx.message.author.voice.channel
+    global voice
     try:
-        global voice
         voice = await channel.connect()
     except:
         pass
     if voice.is_playing():
         voice.stop()
-    voice.play(discord.FFmpegPCMAudio(f"{video_id}.mp3"))
-
-@bot.command()
+    voice.play(discord.FFmpegPCMAudio(f"{save_path}{id}.mp3"))
+    await ctx.send(f"Lecture de la vidéo:\n**{title}**\n{thumbnail}")
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=title))
+    
+# Same as dlYoutube but play it in voice channel
+@bot.command(name="playold", aliases=['playalt, playAlt'])
 async def play(ctx, url, preload=False):
     await ctx.message.delete()
 
@@ -628,7 +651,7 @@ async def helpMusic(ctx):
 
     embedMsg = discord.Embed(title="Youtube", description="Liste des commandes pour Youtube", color=0xFF0000)
     embedMsg.add_field(name="-ytdl [url] [format]", value="Télécharge une vidéo Youtube (formzts disponibles: MP3, OOG, MKV)")
-    embedMsg.add_field(name="-play [url] [préchargement]", value="Joue une musique depuis Youtube dans un salon vocal")
+    embedMsg.add_field(name="-play [recherche ou url]", value="Joue une musique depuis Youtube dans un salon vocal")
     embedMsg.add_field(name="-pause", value="Met en pause la musique")
     embedMsg.add_field(name="-stop", value="Arrête la musique en cours")
     embedMsg.add_field(name="-resume", value="Reprends la musique là où tu l'avais arrêtée")
