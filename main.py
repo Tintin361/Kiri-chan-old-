@@ -400,9 +400,9 @@ async def dlYoutube(ctx, url, format="mp3"):
     else:
         await ctx.send(f"Voici l'URL du fichier: http://91.174.152.111:35080/youtube_audios/{video_id}.{format}")
 
-# New One
+# Same as dlYoutube but play it in voice channel
 @bot.command(name="play")
-async def playBeta(ctx, *content):
+async def play(ctx, *content):
     await ctx.message.delete()
     query = ' '.join(content)
 
@@ -435,31 +435,6 @@ async def playBeta(ctx, *content):
     voice.play(discord.FFmpegPCMAudio(f"{save_path}{id}.mp3"))
     await ctx.send(f"Lecture de la vidéo:\n**{title}**\n{thumbnail}")
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=title))
-    
-# Same as dlYoutube but play it in voice channel
-@bot.command(name="playold", aliases=['playalt, playAlt'])
-async def play(ctx, url, preload=False):
-    await ctx.message.delete()
-
-    video_id, video_title = get_video_id(url, ydl_mp3)
-    file_exist = os.path.exists(f"{save_path}{video_id}.mp3")
-    
-    if file_exist == False:
-        message = await ctx.send("Le téléchargement est en cours, je ne serais plus disponible...")
-        youtube_audio_downloader(url, "mp3")
-        await message.delete()
-
-    if preload == True:
-        await ctx.send("La vidéo a bien été préchargée.")
-        return
-
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=video_title))
-    channel = ctx.message.author.voice.channel
-    global voice
-    voice = await channel.connect()
-    if voice.is_playing():
-        voice.stop()
-    voice.play(discord.FFmpegPCMAudio(f"{save_path}{video_id}.mp3"))
 
 # Stop the music
 @bot.command(name='stop', aliases=['s'])
