@@ -46,7 +46,7 @@ def write_in_txt(content, file):
 
 # Youtube-downloader file's options
 save_path = "/var/www/html/youtube_audios/"
-video_save_path = "/var/www/html/youtube_videos/"
+video_save_path = "/var/www/html/youtube_audios/"
 ydl_mp3 = {
     'format': 'bestaudio/best',
     'postprocessors': [{
@@ -185,7 +185,7 @@ async def cheh(ctx):
         pass
     if voice.is_playing():
         voice.stop()
-    voice.play(discord.FFmpegPCMAudio("/var/www/html/youtube_audios/cheh.mp3"))
+    voice.play(discord.FFmpegPCMAudio(f"{save_path}cheh.mp3"))
     await ctx.voice_client.disconnect()
 
 
@@ -393,7 +393,7 @@ async def playBeta(ctx, url, preload=False):
     await ctx.message.delete()
 
     video_id = get_video_id(url, ydl_mp3)
-    file_exist = os.path.exists(f"/var/www/html/youtube_audios/{video_id}.mp3")
+    file_exist = os.path.exists(f"{video_save_path}{video_id}.mp3")
     
     if file_exist == False:
         command = f'yt-dlp --extract-audio --audio-format mp3 --output "/var/www/html/youtube_audios/%(id)s.%(ext)s" {url}'
@@ -419,7 +419,7 @@ async def play(ctx, url, preload=False):
     await ctx.message.delete()
 
     video_id, video_title = get_video_id(url, ydl_mp3)
-    file_exist = os.path.exists(f"/var/www/html/youtube_audios/{video_id}.mp3")
+    file_exist = os.path.exists(f"{save_path}{video_id}.mp3")
     
     if file_exist == False:
         message = await ctx.send("Le téléchargement est en cours, je ne serais plus disponible...")
@@ -432,14 +432,11 @@ async def play(ctx, url, preload=False):
 
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=video_title))
     channel = ctx.message.author.voice.channel
-    try:
-        global voice
-        voice = await channel.connect()
-    except:
-        pass
+    global voice
+    voice = await channel.connect()
     if voice.is_playing():
         voice.stop()
-    voice.play(discord.FFmpegPCMAudio(f"/var/www/html/youtube_audios/{video_id}.mp3"))
+    voice.play(discord.FFmpegPCMAudio(f"{save_path}{video_id}.mp3"))
 
 # Stop the music
 @bot.command(name='stop', aliases=['s'])
@@ -458,14 +455,11 @@ async def dream(ctx):
 
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="la musique de Dream."))
     channel = ctx.message.author.voice.channel
-    try:
-        global voice
-        voice = await channel.connect()
-    except:
-        pass
+    global voice
+    voice = await channel.connect()
     if voice.is_playing():
         voice.stop()
-    voice.play(discord.FFmpegPCMAudio(f"/var/www/html/youtube_audios/dream.mp3"))
+    voice.play(discord.FFmpegPCMAudio(f"{save_path}dream.mp3"))
 
 # Play Segs video
 @bot.command()
@@ -474,14 +468,11 @@ async def segs(ctx):
     
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="SEEEEEEEGGGGSSS !!!!"))
     channel = ctx.message.author.voice.channel
-    try:
-        global voice
-        voice = await channel.connect()
-    except:
-        pass
+    global voice
+    voice = await channel.connect()
     if voice.is_playing():
         voice.stop()
-    voice.play(discord.FFmpegPCMAudio(f"/var/www/html/youtube_audios/segs.mp3"))
+    voice.play(discord.FFmpegPCMAudio(f"{save_path}segs.mp3"))
 
 # Pause function
 @bot.command(name='pause', aliases=['p'])
