@@ -9,7 +9,7 @@ last_message.txt
 not_important.py
 reddit_data.txt
 list_of_things.py
-__pycache__/
+__pycache__
 logs/
 
 # temporary files which can be created if a process still has a handle open of a deleted file
