@@ -24,13 +24,14 @@ safebooru_password = not_important.reddit_password
 client = discord.Client
 bot = commands.Bot(command_prefix="-", help_command=None)
 
-ver = "1.2.3"
+ver = "1.2.4"
 user_id = 443113150599004161
 listmod = list_of_things.rlist()
 online_message = "des tonnes d'octets"
 voice = None
 timezone = pytz.timezone('Europe/Paris')
 last_message = None
+current_url = ""
 
 def get_time():
     now = dt.now(timezone)
@@ -432,6 +433,9 @@ async def play(ctx, *content):
     await ctx.send(f"Lecture de la vidéo:\n**{title}**\n{thumbnail}")
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=title))
 
+    global current_url
+    current_url = f"{save_path}{id}.mp3"
+
 # Stop the music
 @bot.command(name='stop', aliases=['s'])
 async def stop(ctx):
@@ -462,7 +466,7 @@ async def segs(ctx):
     
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="SEEEEEEEGGGGSSS !!!!"))
     channel = ctx.message.author.voice.channel
-    global voiceS
+    global voice
     voice = await channel.connect()
     if voice.is_playing():
         voice.stop()
@@ -485,6 +489,18 @@ async def resume(ctx):
         await ctx.voice_client.resume()
     except:
         pass
+
+# Platlist function
+@bot.command(name="rewind", aliases=['restart'])
+async def retour_au_debut(ctx):
+    await ctx.message.delete()
+
+    if voice.is_playing():
+        voice.stop()
+    else:
+        await ctx.send("Aucune musique n'est joue actuellement.")
+        return
+    voice.play(discord.FFmpegPCMAudio(current_url, before_options="-ss 00:00:00.00"))
 
 # Kiri-chan quit the voice channel
 @bot.command(name='disconnect', aliases=['leave', 'dis'])
