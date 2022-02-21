@@ -601,6 +601,7 @@ async def helpYoutube(ctx):
     embedMsg.add_field(name="-pause", value="Met en pause la musique")
     embedMsg.add_field(name="-stop", value="Arrête la musique en cours")
     embedMsg.add_field(name="-resume", value="Reprends la musique là où tu l'avais arrêtée")
+    embedMsg.add_field(name="-rewind", value="Remet la musique en cours au début")
     embedMsg.add_field(name="-cheh", value="Quand le karma est contre toi...")
     embedMsg.add_field(name="-dream", value="Joue la musique de Dream dans un salon vocal")
     embedMsg.add_field(name="-segs", value="SEEEEEGGGGGGSSS !")
