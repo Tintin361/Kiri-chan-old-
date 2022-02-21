@@ -4,11 +4,11 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,linux
 
 ### Linux ###
-.history.txt
-.last_message.txt
-.not_important.py
-.reddit_data.txt
-.list_of_things.py
+history.txt
+last_message.txt
+not_important.py
+reddit_data.txt
+list_of_things.py
 
 # temporary files which can be created if a process still has a handle open of a deleted file
 .fuse_hidden*
