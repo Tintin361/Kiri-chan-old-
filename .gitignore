@@ -9,6 +9,8 @@ last_message.txt
 not_important.py
 reddit_data.txt
 list_of_things.py
+__pycache__
+logs
 
 # temporary files which can be created if a process still has a handle open of a deleted file
 .fuse_hidden*
@@ -46,4 +48,3 @@ list_of_things.py
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
-
