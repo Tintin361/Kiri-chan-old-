@@ -24,7 +24,7 @@ safebooru_password = not_important.reddit_password
 client = discord.Client
 bot = commands.Bot(command_prefix="-", help_command=None)
 
-ver = "1.2.2"
+ver = "1.2.3"
 user_id = 443113150599004161
 listmod = list_of_things.rlist()
 online_message = "des tonnes d'octets"
@@ -200,18 +200,6 @@ async def cheh(ctx):
     await ctx.voice_client.disconnect()
 
 
-# Web links
-@bot.command(name="terrePlate", aliases=['terreplate'])
-async def terrePlate(ctx):
-    await ctx.message.delete()
-    await ctx.send("Voici l'URL: http://91.174.152.111:35080/old/terre_plate/")
-
-@bot.command()
-async def jimmy(ctx):
-    await ctx.message.delete()
-    await ctx.send("Voici l'URL pour Jimmy et la kète du 11 Septembre:\nhttp://91.174.152.111:35080/old/jimmy")
-
-
 # Reddit commands
 @bot.command()
 async def last(ctx, arg):
@@ -228,16 +216,14 @@ async def last(ctx, arg):
     sub_title = result[2]
     id = result[3]
     nsfw = result[4]
+    author = result[5]
 
     if nsfw == "True":
-        if ctx.channel.is_nsfw():
-            write_in_txt(str(id), "reddit_data.txt")
-            await ctx.send(f"**Voici le dernier post sur r/{sub_title}:**\n{title}\n\n{url}\n(ID: {id})")
-        else:
-            await ctx.send("Le post contient du contenu NSFW, pour voir ce contenu, utilise la commande dans un salon NSFW.")   
-    else:
-        write_in_txt(str(id), "reddit_data.txt")
-        await ctx.send(f"**Voici le dernier post sur r/{sub_title}:**\n{title}\n\n{url}\n(ID: {id})")
+        if not ctx.channel.is_nsfw():
+            await ctx.send("<:nsfw:719673214644781056> Ce post contient du contenu NSFW, pour voir ce contenu, utilise la commande dans un salon NSFW.")
+            return
+    write_in_txt(str(id), "reddit_data.txt")
+    await ctx.send(f"**Voici le dernier post sur r/{sub_title} par u/{author}:**\n{title}\n\n{url}\n(ID: {id})")
 
 @bot.command()
 async def hot(ctx, arg):
@@ -254,64 +240,76 @@ async def hot(ctx, arg):
     sub_title = result[2]
     id = result[3]
     nsfw = result[4]
+    author = result[5]
 
     if nsfw == "True":
-        if ctx.channel.is_nsfw():
-            write_in_txt(str(id), "reddit_data.txt")
-            await ctx.send(f"**Voici un post sur r/{sub_title}:**\n{title}\n\n{url}\n(ID: {id})")
-        else:
-            await ctx.send("Le post contient du contenu NSFW, pour voir ce contenu, utilise la commande dans un salon NSFW.")
-    else:
-        write_in_txt(str(id), "reddit_data.txt")
-        await ctx.send(f"**Voici un post sur r/{sub_title}:**\n{title}\n\n{url}\n(ID: {id})")
+        if not ctx.channel.is_nsfw():
+            await ctx.send("<:nsfw:719673214644781056> Ce post contient du contenu NSFW, pour voir ce contenu, utilise la commande dans un salon NSFW.")
+            return
+    write_in_txt(str(id), "reddit_data.txt")
+    await ctx.send(f"**Voici le dernier post sur r/{sub_title} par u/{author}:**\n{title}\n\n{url}\n(ID: {id})")
 
-@bot.command()
+@bot.command(name="fakehistory", aliases=['FakeHistoryPorn', 'FakeHistory', 'fakeHistory', 'Fakehistory'])
 async def fakehistory(ctx):
     await ctx.message.delete()
 
-    result = red.fake_history()
+    result = red.get("fakehistoryporn", 50)
     title = result[0]
     url = result[1]
     id = result[2]
+    nsfw = result[3]
+    author = result[4]
 
+    if nsfw == "True":
+        if not ctx.channel.is_nsfw():
+            await ctx.send("<:nsfw:719673214644781056> Ce post contient du contenu NSFW, pour voir ce contenu, utilise la commande dans un salon NSFW.")
+            return
     write_in_txt(str(id), "reddit_data.txt")
-    await ctx.send(f"**Voici un post sur r/FakeHistoryPorn:**\n{title}\n\n{url}\n(ID: {id})")
+    await ctx.send(f"**Voici le dernier post sur r/FakeHistory par u/{author}:**\n{title}\n\n{url}\n(ID: {id})")
 
 @bot.command()
 async def wallpaper(ctx):
     await ctx.message.delete()
 
-    result = red.get("wallpaper")
+    result = red.get("wallpaper", 30)
     title = result[0]
     url = result[1]
     id = result[2]
+    author = result[4]
 
     write_in_txt(str(id), "reddit_data.txt")
-    await ctx.send(f"**Voici un post sur r/Wallpaper:**\n{title}\n\n{url}\n(ID: {id})")
+    await ctx.send(f"**Voici le dernier post sur r/Wallpaper par u/{author}:**\n{title}\n\n{url}\n(ID: {id})")
 
 @bot.command()
 async def honkai(ctx):
     await ctx.message.delete()
 
-    result = red.get("houkai3rd")
+    result = red.get("houkai3rd", 30)
     title = result[0]
     url = result[1]
     id = result[2]
+    nsfw = result[3]
+    author = result[4]
 
+    if nsfw == "True":
+        if not ctx.channel.is_nsfw():
+            await ctx.send("<:nsfw:719673214644781056> Ce post contient du contenu NSFW, pour voir ce contenu, utilise la commande dans un salon NSFW.")
+            return
     write_in_txt(str(id), "reddit_data.txt")
-    await ctx.send(f"**Voici un post sur r/Houkai3rd:**\n{title}\n\n{url}\n(ID: {id})")
+    await ctx.send(f"**Voici le dernier post sur r/Houkai3rd par u/{author}:**\n{title}\n\n{url}\n(ID: {id})")
 
 @bot.command()
 async def crappy(ctx):
     await ctx.message.delete()
 
-    result = red.get("crappydesign")
+    result = red.get("crappydesign", 30)
     title = result[0]
     url = result[1]
     id = result[2]
+    author = result[4]
 
     write_in_txt(str(id), "reddit_data.txt")
-    await ctx.send(f"**Voici un post sur r/CrappyDesign:**\n{title}\n\n{url}\n(ID: {id})")
+    await ctx.send(f"**Voici le dernier post sur r/CrappyDesign par u/{author}:**\n{title}\n\n{url}\n(ID: {id})")
 
 @bot.command(name='upvote', aliases=['up'])
 async def upvote(ctx):
@@ -553,12 +551,11 @@ async def delete(ctx, id):
 async def help(ctx):
     await ctx.message.delete()
     embedMsg = discord.Embed(title="Liste des commandes", description="Liste de toutes les catégories", color=0xffffff)
-    embedMsg.add_field(name="Reddit", value="-helpReddit", inline=False)
-    embedMsg.add_field(name="Musiques", value="-helpMusic", inline=False)
-    embedMsg.add_field(name="Sites Web", value="-helpWeb", inline=False)
-    embedMsg.add_field(name="Features", value="-helpFeatures", inline=False)
-    embedMsg.add_field(name="Outils", value="-helpTools", inline=False)
-    embedMsg.add_field(name="Administratif", value="-helpAdmin", inline=False)
+    embedMsg.add_field(name="<:reddit:794069835138596886> Reddit", value="-helpReddit", inline=False)
+    embedMsg.add_field(name="<:youtube:316620060221374466> Youtube", value="-helpYoutube", inline=False)
+    embedMsg.add_field(name=":robot: Features", value="-helpFeatures", inline=False)
+    embedMsg.add_field(name=":screwdriver: Outils", value="-helpTools", inline=False)
+    embedMsg.add_field(name="<:Modo:945135154131791912> Administratif", value="-helpAdmin", inline=False)
 
     await ctx.channel.send(embed=embedMsg)
 
@@ -566,7 +563,7 @@ async def help(ctx):
 async def helpReddit(ctx):
     await ctx.message.delete()
     
-    embedMsg = discord.Embed(title="Reddit", description="Liste des commandes pour Reddit", color=0xff4300)
+    embedMsg = discord.Embed(title="<:reddit:794069835138596886> Reddit", description="Liste des commandes pour Reddit", color=0xff4300)
     embedMsg.add_field(name="-last [nom du subreddit]", value="Obtiens le dernier post d'un subreddit")
     embedMsg.add_field(name="-hot [nom du subreddit]", value="Obtiens un post populaire au hasard d'un subreddit")
     embedMsg.add_field(name="-fakehistory", value="Retourne un post du subreddit r/FakeHistoryPorn")
@@ -579,11 +576,11 @@ async def helpReddit(ctx):
     await ctx.channel.send(embed=embedMsg)
 
 @bot.command()
-async def helpMusic(ctx):
+async def helpYoutube(ctx):
     await ctx.message.delete()
 
-    embedMsg = discord.Embed(title="Youtube", description="Liste des commandes pour Youtube", color=0xFF0000)
-    embedMsg.add_field(name="-ytdl [url] [format]", value="Télécharge une vidéo Youtube (formzts disponibles: MP3, OOG, MKV)")
+    embedMsg = discord.Embed(title="<:youtube:316620060221374466> Youtube", description="Liste des commandes pour Youtube", color=0xFF0000)
+    embedMsg.add_field(name="-ytdl [url] [format]", value="Télécharge une vidéo Youtube (formats disponibles: MP3, OOG, MKV)")
     embedMsg.add_field(name="-play [recherche ou url]", value="Joue une musique depuis Youtube dans un salon vocal")
     embedMsg.add_field(name="-pause", value="Met en pause la musique")
     embedMsg.add_field(name="-stop", value="Arrête la musique en cours")
@@ -596,20 +593,10 @@ async def helpMusic(ctx):
     await ctx.channel.send(embed=embedMsg)
 
 @bot.command()
-async def helpWeb(ctx):
-    await ctx.message.delete()
-
-    embedMsg = discord.Embed(title="Sites Web", description="Liste des commandes pour les sites web", color=0x1d2333)
-    embedMsg.add_field(name="-terrePlate", value="Je t'envoie l'adresse du site web de mon créateur")
-    embedMsg.add_field(name="-jimmy", value="Je t'envoie l'URL de Jimmy RPG")
-
-    await ctx.channel.send(embed=embedMsg)
-
-@bot.command()
 async def helpFeatures(ctx):
     await ctx.message.delete()
 
-    embedMsg = discord.Embed(title="Features", description="Liste des commandes pour les features", color=0xed8a09)
+    embedMsg = discord.Embed(title=":robot: Features", description="Liste des commandes pour les features", color=0xed8a09)
     embedMsg.add_field(name="-poyo", value="POYO !")
     embedMsg.add_field(name="-pseudo [pseudonyme]", value="Change mon pseudo")
     embedMsg.add_field(name="-nick [pseudonyme]", value="Change ton pseudo si j'ai les per")
@@ -622,7 +609,7 @@ async def helpFeatures(ctx):
 async def helpOutils(ctx):
     await ctx.message.delete()
 
-    embedMsg = discord.Embed(title="Outils", description="Liste des commandes pour les outils", color=0x6d6d6d)
+    embedMsg = discord.Embed(title=":screwdriver: Outils", description="Liste des commandes pour les outils", color=0x6d6d6d)
     embedMsg.add_field(name="-ping", value="Affiche la latence")
     embedMsg.add_field(name="-info", value="Obtiens des infos sur moi")
     embedMsg.add_field(name="-version", value="Obtiens le numéro de version")
@@ -634,7 +621,7 @@ async def helpOutils(ctx):
 async def helpAdmin(ctx):
     await ctx.message.delete()
 
-    embedMsg = discord.Embed(title="Admin", description="Liste des commandes uniquement pour les modérateurs", color=0xff00fa)
+    embedMsg = discord.Embed(title="<:Modo:945135154131791912> Administratif", description="Liste des commandes uniquement pour les modérateurs", color=0xff00fa)
     embedMsg.add_field(name="-mpSet [ID utilisateur]", value="Permet de définir à qui j'envoie le Message Privé")
     embedMsg.add_field(name="-mp [contenu du message]", value="J'envoie le contenu de ton message")
     embedMsg.add_field(name="-join", value="Je rejoins le salon vocal dans lequel tu est connecté")
