@@ -18,13 +18,12 @@ import twitter as tw
 import os.path, platform
 import validators
 
-DISCORD_TOKEN = not_important.bot_token
-safebooru_password = not_important.reddit_password
+DISCORD_TOKEN, safebooru_password = not_important.bot_token, not_important.reddit_password
 
 client = discord.Client
 bot = commands.Bot(command_prefix="-", help_command=None)
 
-ver = "1.2.4"
+ver = "1.2.5"
 user_id = 443113150599004161
 listmod = list_of_things.rlist()
 online_message = "des tonnes d'octets"
@@ -46,7 +45,7 @@ def write_in_txt(content, file):
 
 # Youtube-downloader file's options
 save_path = "/var/www/html/youtube_audios/"
-video_save_path = "/var/www/html/youtube_audios/"
+video_save_path = "/var/www/html/youtube_videos/"
 ydl_mp3 = {
     'format': 'bestaudio/best',
     'postprocessors': [{
@@ -74,13 +73,6 @@ ydl_mkv = {'format' : 'bestvideo+bestaudio[ext=m4a]/bestvideo+bestaudio/best',
     'outtmpl':video_save_path + '%(id)s.%(ext)s',
 }
 
-def get_video_id(url, opts):
-    with youtube_dl.YoutubeDL(opts) as ydl:
-        infos = ydl.extract_info(url, download=False)
-        video_id = infos.get("id", None)
-        video_title = infos.get("title", None)
-        return video_id, video_title
-
 def get_video_data(content, format, is_query):
     with youtube_dl.YoutubeDL(format) as ydl:
         if is_query:
@@ -94,7 +86,6 @@ def get_video_data(content, format, is_query):
             id = infos.get("id", None)
             title = infos.get("title", None)
             return id, title
-        
 
 def youtube_audio_downloader(url, format):
     if format == "mp3":
@@ -122,7 +113,7 @@ async def on_message(msg):
         author = "Kiri-chan"
         color = "cyan"
     elif msg.author.id == 443113150599004161:
-        author = "Tintin"
+        author = "NekoTintin"
         color = "yellow"
     elif msg.author.id == 370169515515838465:
         author = "Celian.msi"
@@ -377,25 +368,41 @@ async def nick(ctx, *arg):
 
 # Download and convert a video and return an URL
 @bot.command(name="dlYoutube", aliases=['dlyt', 'ytdl'])
-async def dlYoutube(ctx, url, format="mp3"):
+async def dlYoutube(ctx, format="mp3", *content):
     await ctx.message.delete()
+    query = ' '.join(content)
+
+    list_format = ["mp3", "ogg", "mkv"]
+    if format not in list_format:
+        await ctx.send("Désolée, je ne connais pas ce format de fichier...")
+
+    search_msg = await ctx.send("<a:search:944484192018903060> Recherche de la vidéo sur YouTube en cours...")
+
+    check_url = validators.url(query)
+    if check_url == True:
+        id, title = get_video_data(query, ydl_mp3, False)
+        url = query
+    else:
+        id, title = get_video_data(query, ydl_mp3, True)
+        url = f"https://www.youtube.com/watch?v={id}"
+        
+    thumbnail = f"(https://i.ytimg.com/vi/{id}/maxresdefault.jpg)"
+    await search_msg.delete()
 
     if format == "mkv":
-        video_id, video_title = get_video_id(url, ydl_mkv)
-        file_exist = os.path.exists(f"/var/www/html/youtube_videos/{video_id}.{format}")
+        file_exist = os.path.exists(f"/var/www/html/youtube_videos/{id}.{format}")
     else:
-        video_id, video_title = get_video_id(url, ydl_mp3)
-        file_exist = os.path.exists(f"/var/www/html/youtube_audios/{video_id}.{format}")
-    
+        file_exist = os.path.exists(f"/var/www/html/youtube_audios/{id}.{format}")
+
     if file_exist == False:
-        message = await ctx.send("Le téléchargement est en cours, je ne serais plus disponible...")
+        message = await ctx.send(f"Téléchargement et conversion de la vidéo:\n**{title}**\nJe ne suis pas encore multi-tâche donc je ne serais plus disponible.\n{thumbnail}")
         youtube_audio_downloader(url, format)
         await message.delete()
 
     if format == "mkv":
-        await ctx.send(f"Voici l'URL du fichier: http://91.174.152.111:35080/youtube_videos/{video_id}.{format}")
+        await ctx.send(f"Voici l'URL du fichier: http://91.174.152.111:35080/youtube_videos/{id}.{format}\n{thumbnail}")
     else:
-        await ctx.send(f"Voici l'URL du fichier: http://91.174.152.111:35080/youtube_audios/{video_id}.{format}")
+        await ctx.send(f"Voici l'URL du fichier: http://91.174.152.111:35080/youtube_audios/{id}.{format}\n{thumbnail}")
 
 # Same as dlYoutube but play it in voice channel
 @bot.command(name="play")
@@ -454,7 +461,10 @@ async def dream(ctx):
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="la musique de Dream."))
     channel = ctx.message.author.voice.channel
     global voice
-    voice = await channel.connect()
+    try:
+        voice = await channel.connect()
+    except:
+        pass
     if voice.is_playing():
         voice.stop()
     voice.play(discord.FFmpegPCMAudio(f"{save_path}dream.mp3"))
@@ -467,7 +477,10 @@ async def segs(ctx):
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="SEEEEEEEGGGGSSS !!!!"))
     channel = ctx.message.author.voice.channel
     global voice
-    voice = await channel.connect()
+    try:
+        voice = await channel.connect()
+    except:
+        pass
     if voice.is_playing():
         voice.stop()
     voice.play(discord.FFmpegPCMAudio(f"{save_path}segs.mp3"))
@@ -563,92 +576,41 @@ async def delete(ctx, id):
 
 
 # Help functions
-@bot.command()
+@bot.command(name="help")
 async def help(ctx):
     await ctx.message.delete()
-    embedMsg = discord.Embed(title="Liste des commandes", description="Liste de toutes les catégories", color=0xffffff)
-    embedMsg.add_field(name="<:reddit:794069835138596886> Reddit", value="-helpReddit", inline=False)
-    embedMsg.add_field(name="<:youtube:316620060221374466> Youtube", value="-helpYoutube", inline=False)
-    embedMsg.add_field(name=":robot: Features", value="-helpFeatures", inline=False)
-    embedMsg.add_field(name=":screwdriver: Outils", value="-helpTools", inline=False)
-    embedMsg.add_field(name="<:Modo:945135154131791912> Administratif", value="-helpAdmin", inline=False)
+    message = list_of_things.get_help()
+    await ctx.channel.send(embed=message)
 
-    await ctx.channel.send(embed=embedMsg)
-
-@bot.command()
+@bot.command(name="helpReddit", aliases=['helpreddit'])
 async def helpReddit(ctx):
     await ctx.message.delete()
-    
-    embedMsg = discord.Embed(title="<:reddit:794069835138596886> Reddit", description="Liste des commandes pour Reddit", color=0xff4300)
-    embedMsg.add_field(name="-last [nom du subreddit]", value="Obtiens le dernier post d'un subreddit")
-    embedMsg.add_field(name="-hot [nom du subreddit]", value="Obtiens un post populaire au hasard d'un subreddit")
-    embedMsg.add_field(name="-fakehistory", value="Retourne un post du subreddit r/FakeHistoryPorn")
-    embedMsg.add_field(name="-wallpaper", value="Retourne un post du subreddit r/Wallpaper")
-    embedMsg.add_field(name="-honkai", value="Affiche un post du subreddit r/Houkai3rd")
-    embedMsg.add_field(name="-crappy", value="Affiche un post du subreddit r/CrappyDesign")
-    embedMsg.add_field(name="-upvote", value="Upvote le dernier post que j'affiche")
-    embedMsg.add_field(name="-score [post]", value="Affiche le score du post")
+    message = list_of_things.get_help_reddit()
+    await ctx.channel.send(embed=message)
 
-    await ctx.channel.send(embed=embedMsg)
-
-@bot.command()
+@bot.command(name="helpYoutube", aliases=['helpyoutube', 'helpYT'])
 async def helpYoutube(ctx):
     await ctx.message.delete()
-
-    embedMsg = discord.Embed(title="<:youtube:316620060221374466> Youtube", description="Liste des commandes pour Youtube", color=0xFF0000)
-    embedMsg.add_field(name="-ytdl [url] [format]", value="Télécharge une vidéo Youtube (formats disponibles: MP3, OOG, MKV)")
-    embedMsg.add_field(name="-play [recherche ou url]", value="Joue une musique depuis Youtube dans un salon vocal")
-    embedMsg.add_field(name="-pause", value="Met en pause la musique")
-    embedMsg.add_field(name="-stop", value="Arrête la musique en cours")
-    embedMsg.add_field(name="-resume", value="Reprends la musique là où tu l'avais arrêtée")
-    embedMsg.add_field(name="-rewind", value="Remet la musique en cours au début")
-    embedMsg.add_field(name="-cheh", value="Quand le karma est contre toi...")
-    embedMsg.add_field(name="-dream", value="Joue la musique de Dream dans un salon vocal")
-    embedMsg.add_field(name="-segs", value="SEEEEEGGGGGGSSS !")
-    embedMsg.add_field(name="-disconnect", value="Je quitte le salon vocal")
-
-    await ctx.channel.send(embed=embedMsg)
+    message = list_of_things.get_help_youtube()
+    await ctx.channel.send(embed=message)
 
 @bot.command()
 async def helpFeatures(ctx):
     await ctx.message.delete()
-
-    embedMsg = discord.Embed(title=":robot: Features", description="Liste des commandes pour les features", color=0xed8a09)
-    embedMsg.add_field(name="-poyo", value="POYO !")
-    embedMsg.add_field(name="-pseudo [pseudonyme]", value="Change mon pseudo")
-    embedMsg.add_field(name="-nick [pseudonyme]", value="Change ton pseudo si j'ai les per")
-    embedMsg.add_field(name="-datetime", value="Je te donne l'heure")
-    embedMsg.add_field(name="-randomNum [valeur 1] [valeur 2]", value="Je te donne un nombre aléatoire entre deux valeurs")
-
-    await ctx.channel.send(embed=embedMsg)
+    message = list_of_things.get_help_features()
+    await ctx.channel.send(embed=message)
 
 @bot.command(name="helpOutils", aliases=['helpTools'])
 async def helpOutils(ctx):
     await ctx.message.delete()
-
-    embedMsg = discord.Embed(title=":screwdriver: Outils", description="Liste des commandes pour les outils", color=0x6d6d6d)
-    embedMsg.add_field(name="-ping", value="Affiche la latence")
-    embedMsg.add_field(name="-info", value="Obtiens des infos sur moi")
-    embedMsg.add_field(name="-version", value="Obtiens le numéro de version")
-    embedMsg.add_field(name="-github", value="Lien vers le repo sur GitHub.")
-
-    await ctx.channel.send(embed=embedMsg)
+    message = list_of_things.get_help_tools()
+    await ctx.channel.send(embed=message)
 
 @bot.command()
 async def helpAdmin(ctx):
     await ctx.message.delete()
-
-    embedMsg = discord.Embed(title="<:Modo:945135154131791912> Administratif", description="Liste des commandes uniquement pour les modérateurs", color=0xff00fa)
-    embedMsg.add_field(name="-mpSet [ID utilisateur]", value="Permet de définir à qui j'envoie le Message Privé")
-    embedMsg.add_field(name="-mp [contenu du message]", value="J'envoie le contenu de ton message")
-    embedMsg.add_field(name="-join", value="Je rejoins le salon vocal dans lequel tu est connecté")
-    embedMsg.add_field(name="-online [type] [message]", value="Je suis connectée")
-    embedMsg.add_field(name="-idle [type] [message]", value="Je deviens inactive")
-    embedMsg.add_field(name="-dnd [type] [message]", value="Ne me dérange pas")
-    embedMsg.add_field(name="-invisible", value="Mais t'es pas là, mais t'es où ?")
-    embedMsg.add_field(name="-shutdown", value="Arrêt du bot")
-
-    await ctx.channel.send(embed=embedMsg)
+    message = list_of_things.get_help_admin()
+    await ctx.channel.send(embed=message)
 
 
 # Shutdown the bot
@@ -665,12 +627,11 @@ async def shutdown(ctx):
 
 @bot.command(name="informations", aliases=['info'])
 async def informations(ctx):
-    await ctx.channel.send('Je suis une bot encore en développement créée par Tintin.exe#6912 !')
+    await ctx.channel.send('Je suis une bot encore en développement créée par NekoTintin.exe#6912 !')
     await ctx.message.delete()
 
 @bot.command(name="version", aliases=['ver'])
 async def version(ctx):
-    global ver
     await ctx.message.delete()
     await ctx.send(f"Je suis en version {ver} !")
 
