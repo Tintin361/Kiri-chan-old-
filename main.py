@@ -16,14 +16,14 @@ import random
 import yt_dlp as youtube_dl
 import twitter as tw
 import os.path, platform
-import validators
+import validators, requests
 
 DISCORD_TOKEN, safebooru_password = not_important.bot_token, not_important.reddit_password
 
 client = discord.Client
 bot = commands.Bot(command_prefix="-", help_command=None)
 
-ver = "1.2.5"
+ver = "1.2.6"
 user_id = 443113150599004161
 listmod = list_of_things.rlist()
 online_message = "des tonnes d'octets"
@@ -169,7 +169,8 @@ async def ping(ctx):
 async def join(ctx):
     if ctx.author.id in listmod:
         await ctx.message.delete()
-        voice_player = await ctx.message.author.voice.channel.connect()
+        global voice
+        voice = await ctx.message.author.voice.channel.connect()
 
 
 # Random one
@@ -371,13 +372,11 @@ async def nick(ctx, *arg):
 async def dlYoutube(ctx, format="mp3", *content):
     await ctx.message.delete()
     query = ' '.join(content)
-
     list_format = ["mp3", "ogg", "mkv"]
     if format not in list_format:
         await ctx.send("Désolée, je ne connais pas ce format de fichier...")
 
     search_msg = await ctx.send("<a:search:944484192018903060> Recherche de la vidéo sur YouTube en cours...")
-
     check_url = validators.url(query)
     if check_url == True:
         id, title = get_video_data(query, ydl_mp3, False)
@@ -386,7 +385,10 @@ async def dlYoutube(ctx, format="mp3", *content):
         id, title = get_video_data(query, ydl_mp3, True)
         url = f"https://www.youtube.com/watch?v={id}"
         
-    thumbnail = f"(https://i.ytimg.com/vi/{id}/maxresdefault.jpg)"
+    thumbnail_url = f"https://i.ytimg.com/vi/{id}/maxresdefault.jpg"
+    with open("image.png", "wb") as f:
+        image = requests.get(thumbnail_url)
+        f.write(image.content)
     await search_msg.delete()
 
     if format == "mkv":
@@ -395,14 +397,23 @@ async def dlYoutube(ctx, format="mp3", *content):
         file_exist = os.path.exists(f"/var/www/html/youtube_audios/{id}.{format}")
 
     if file_exist == False:
-        message = await ctx.send(f"Téléchargement et conversion de la vidéo:\n**{title}**\nJe ne suis pas encore multi-tâche donc je ne serais plus disponible.\n{thumbnail}")
-        youtube_audio_downloader(url, format)
-        await message.delete()
+        downloading = discord.Embed(title="<a:search:944484192018903060> Téléchargement en cours...", description="Téléchargement et conversion de la vidéo\nJe ne suis pas encore multi-tâche donc je ne serais plus disponible.", color=0xFF0000)
+        downloading.add_field(name="Titre de la vidéo:", value=title)
+        downloading.set_image(url="attachment://image.png")
+        msg = await ctx.channel.send(file=discord.File("/home/Tintin/Desktop/Kiri-chan/image.png", filename="image.png"), embed=downloading)
 
+        youtube_audio_downloader(url, format)
+        await msg.delete()
+    
+    dl_succesfull = discord.Embed(title="<a:downloaded:945881257269674014> Téléchargement terminé !", description="Le téléchargement de la vidéo est terminée.", color=0xFF0000)
+    dl_succesfull.add_field(name="Titre de la vidéo:", value=title)
     if format == "mkv":
-        await ctx.send(f"Voici l'URL du fichier: http://91.174.152.111:35080/youtube_videos/{id}.{format}\n{thumbnail}")
+        dl_succesfull.add_field(name="Lien de la vidéo:", value=f"http://91.174.152.111:35080/youtube_videos/{id}.{format}", inline=False)
     else:
-        await ctx.send(f"Voici l'URL du fichier: http://91.174.152.111:35080/youtube_audios/{id}.{format}\n{thumbnail}")
+        dl_succesfull.add_field(name="Lien de la vidéo:", value=f"http://91.174.152.111:35080/youtube_audios/{id}.{format}", inline=False)
+    dl_succesfull.add_field(name="Lien de la miniature:", value=f"{thumbnail_url}", inline=False)
+    dl_succesfull.set_image(url="attachment://image.png")
+    await ctx.channel.send(file=discord.File("/home/Tintin/Desktop/Kiri-chan/image.png", filename="image.png"), embed=dl_succesfull)
 
 # Same as dlYoutube but play it in voice channel
 @bot.command(name="play")
@@ -420,13 +431,20 @@ async def play(ctx, *content):
         id, title = get_video_data(query, ydl_mp3, True)
         url = f"https://www.youtube.com/watch?v={id}"
         
-    thumbnail = f"(https://i.ytimg.com/vi/{id}/maxresdefault.jpg)"
+    with open("image.png", "wb") as f:
+        image = requests.get(f"https://i.ytimg.com/vi/{id}/maxresdefault.jpg")
+        f.write(image.content)
     await search_msg.delete()
+
     file_exist = os.path.exists(f"{save_path}{id}.mp3")
     if file_exist == False:
-        message = await ctx.send(f"Téléchargement et conversion de la vidéo:\n**{title}**\nJe ne suis pas encore multi-tâche donc je ne serais plus disponible.\n{thumbnail}")
+        downloading = discord.Embed(title="<a:search:944484192018903060> Téléchargement en cours...", description="Téléchargement et conversion de la vidéo\nJe ne suis pas encore multi-tâche donc je ne serais plus disponible.", color=0xFF0000)
+        downloading.add_field(name="Titre de la vidéo:", value=title)
+        downloading.set_image(url="attachment://image.png")
+        msg = await ctx.channel.send(file=discord.File("/home/Tintin/Desktop/Kiri-chan/image.png", filename="image.png"), embed=downloading)
+
         youtube_audio_downloader(url, "mp3")
-        await message.delete()
+        await msg.delete()
 
     channel = ctx.message.author.voice.channel
     global voice
@@ -437,7 +455,11 @@ async def play(ctx, *content):
     if voice.is_playing():
         voice.stop()
     voice.play(discord.FFmpegPCMAudio(f"{save_path}{id}.mp3"))
-    await ctx.send(f"Lecture de la vidéo:\n**{title}**\n{thumbnail}")
+
+    play_msg = discord.Embed(title=":play_pause: Téléchargement terminé", description=f"Lecture de la vidéo dans le salon **{voice.channel.name}**.", color=0xFF0000)
+    play_msg.add_field(name="Titre de la vidéo:", value=title)
+    play_msg.set_image(url="attachment://image.png")
+    await ctx.channel.send(file=discord.File("/home/Tintin/Desktop/Kiri-chan/image.png", filename="image.png"), embed=play_msg)
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=title))
 
     global current_url
@@ -519,6 +541,8 @@ async def retour_au_debut(ctx):
 @bot.command(name='disconnect', aliases=['leave', 'dis'])
 async def disconnect(ctx):
     await ctx.message.delete()
+    if ctx.message.author.id == 370169515515838465:
+        return
     try:
         await ctx.voice_client.disconnect()
     except:

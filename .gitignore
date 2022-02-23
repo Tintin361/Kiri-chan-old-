@@ -11,6 +11,7 @@ reddit_data.txt
 list_of_things.py
 __pycache__
 logs
+image.png
 
 # temporary files which can be created if a process still has a handle open of a deleted file
 .fuse_hidden*
