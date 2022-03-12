@@ -1,4 +1,4 @@
-bot_token = "Nzg5OTg0MTg4MjI0MTEwNjMy.X96AGw._aRrm7Db1zf_e0U0BnddMw8MdVg"
+bot_token = "Nzg5OTg0MTg4MjI0MTEwNjMy.X96AGw.fsRts5s6K2dV4uq4YyoedIvrjhs"
 
 client_id = "GXDYh2WDrBeBcA"
 client_secret = "8QrJnZbnjCpHs_BF3TImQO62fkhr6Q"
