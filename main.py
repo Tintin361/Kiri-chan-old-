@@ -18,7 +18,6 @@ import twitter as tw
 import os.path, platform
 import validators, requests
 from colorthief import ColorThief
-import webcolors
 
 DISCORD_TOKEN, safebooru_password = not_important.bot_token, not_important.reddit_password
 
