@@ -16,21 +16,23 @@ import random
 import yt_dlp as youtube_dl
 import twitter as tw
 import os.path, platform
-import validators
+import validators, requests
+from colorthief import ColorThief
+import webcolors
 
-DISCORD_TOKEN = not_important.bot_token
-safebooru_password = not_important.reddit_password
+DISCORD_TOKEN, safebooru_password = not_important.bot_token, not_important.reddit_password
 
 client = discord.Client
 bot = commands.Bot(command_prefix="-", help_command=None)
 
-ver = "1.2.2"
+ver = "1.2.7"
 user_id = 443113150599004161
 listmod = list_of_things.rlist()
 online_message = "des tonnes d'octets"
 voice = None
 timezone = pytz.timezone('Europe/Paris')
 last_message = None
+current_url = ""
 
 def get_time():
     now = dt.now(timezone)
@@ -45,7 +47,7 @@ def write_in_txt(content, file):
 
 # Youtube-downloader file's options
 save_path = "/var/www/html/youtube_audios/"
-video_save_path = "/var/www/html/youtube_audios/"
+video_save_path = "/var/www/html/youtube_videos/"
 ydl_mp3 = {
     'format': 'bestaudio/best',
     'postprocessors': [{
@@ -73,13 +75,6 @@ ydl_mkv = {'format' : 'bestvideo+bestaudio[ext=m4a]/bestvideo+bestaudio/best',
     'outtmpl':video_save_path + '%(id)s.%(ext)s',
 }
 
-def get_video_id(url, opts):
-    with youtube_dl.YoutubeDL(opts) as ydl:
-        infos = ydl.extract_info(url, download=False)
-        video_id = infos.get("id", None)
-        video_title = infos.get("title", None)
-        return video_id, video_title
-
 def get_video_data(content, format, is_query):
     with youtube_dl.YoutubeDL(format) as ydl:
         if is_query:
@@ -93,7 +88,6 @@ def get_video_data(content, format, is_query):
             id = infos.get("id", None)
             title = infos.get("title", None)
             return id, title
-        
 
 def youtube_audio_downloader(url, format):
     if format == "mp3":
@@ -121,7 +115,7 @@ async def on_message(msg):
         author = "Kiri-chan"
         color = "cyan"
     elif msg.author.id == 443113150599004161:
-        author = "Tintin"
+        author = "NekoTintin"
         color = "yellow"
     elif msg.author.id == 370169515515838465:
         author = "Celian.msi"
@@ -177,7 +171,8 @@ async def ping(ctx):
 async def join(ctx):
     if ctx.author.id in listmod:
         await ctx.message.delete()
-        voice_player = await ctx.message.author.voice.channel.connect()
+        global voice
+        voice = await ctx.message.author.voice.channel.connect()
 
 
 # Random one
@@ -200,18 +195,6 @@ async def cheh(ctx):
     await ctx.voice_client.disconnect()
 
 
-# Web links
-@bot.command(name="terrePlate", aliases=['terreplate'])
-async def terrePlate(ctx):
-    await ctx.message.delete()
-    await ctx.send("Voici l'URL: http://91.174.152.111:35080/old/terre_plate/")
-
-@bot.command()
-async def jimmy(ctx):
-    await ctx.message.delete()
-    await ctx.send("Voici l'URL pour Jimmy et la kète du 11 Septembre:\nhttp://91.174.152.111:35080/old/jimmy")
-
-
 # Reddit commands
 @bot.command()
 async def last(ctx, arg):
@@ -228,16 +211,15 @@ async def last(ctx, arg):
     sub_title = result[2]
     id = result[3]
     nsfw = result[4]
+    author = result[5]
 
     if nsfw == "True":
-        if ctx.channel.is_nsfw():
-            write_in_txt(str(id), "reddit_data.txt")
-            await ctx.send(f"**Voici le dernier post sur r/{sub_title}:**\n{title}\n\n{url}\n(ID: {id})")
-        else:
-            await ctx.send("Le post contient du contenu NSFW, pour voir ce contenu, utilise la commande dans un salon NSFW.")   
-    else:
-        write_in_txt(str(id), "reddit_data.txt")
-        await ctx.send(f"**Voici le dernier post sur r/{sub_title}:**\n{title}\n\n{url}\n(ID: {id})")
+        if not ctx.channel.is_nsfw():
+            await ctx.send("<:nsfw:719673214644781056> Ce post contient du contenu NSFW, pour voir ce contenu, utilise la commande dans un salon NSFW (Je t'ai envoyé l'URL en privé).")
+            await ctx.author.send(f"Lien:\n{url}")
+            return
+    write_in_txt(str(id), "reddit_data.txt")
+    await ctx.send(f"**Voici le dernier post sur r/{sub_title} par u/{author}:**\n{title}\n\n{url}\n(ID: {id})")
 
 @bot.command()
 async def hot(ctx, arg):
@@ -254,64 +236,79 @@ async def hot(ctx, arg):
     sub_title = result[2]
     id = result[3]
     nsfw = result[4]
+    author = result[5]
 
     if nsfw == "True":
-        if ctx.channel.is_nsfw():
-            write_in_txt(str(id), "reddit_data.txt")
-            await ctx.send(f"**Voici un post sur r/{sub_title}:**\n{title}\n\n{url}\n(ID: {id})")
-        else:
-            await ctx.send("Le post contient du contenu NSFW, pour voir ce contenu, utilise la commande dans un salon NSFW.")
-    else:
-        write_in_txt(str(id), "reddit_data.txt")
-        await ctx.send(f"**Voici un post sur r/{sub_title}:**\n{title}\n\n{url}\n(ID: {id})")
+        if not ctx.channel.is_nsfw():
+            await ctx.send("<:nsfw:719673214644781056> Ce post contient du contenu NSFW, pour voir ce contenu, utilise la commande dans un salon NSFW (Je t'ai envoyé l'URL en privé).")
+            await ctx.author.send(f"Lien:\n{url}")
+            return
+    write_in_txt(str(id), "reddit_data.txt")
+    await ctx.send(f"**Voici le dernier post sur r/{sub_title} par u/{author}:**\n{title}\n\n{url}\n(ID: {id})")
 
-@bot.command()
+@bot.command(name="fakehistory", aliases=['FakeHistoryPorn', 'FakeHistory', 'fakeHistory', 'Fakehistory'])
 async def fakehistory(ctx):
     await ctx.message.delete()
 
-    result = red.fake_history()
+    result = red.get("fakehistoryporn", 50)
     title = result[0]
     url = result[1]
     id = result[2]
+    nsfw = result[3]
+    author = result[4]
 
+    if nsfw == "True":
+        if not ctx.channel.is_nsfw():
+            await ctx.send("<:nsfw:719673214644781056> Ce post contient du contenu NSFW, pour voir ce contenu, utilise la commande dans un salon NSFW (Je t'ai envoyé l'URL en privé).")
+            await ctx.author.send(f"Lien:\n{url}")
+            return
     write_in_txt(str(id), "reddit_data.txt")
-    await ctx.send(f"**Voici un post sur r/FakeHistoryPorn:**\n{title}\n\n{url}\n(ID: {id})")
+    await ctx.send(f"**Voici le dernier post sur r/FakeHistory par u/{author}:**\n{title}\n\n{url}\n(ID: {id})")
 
 @bot.command()
 async def wallpaper(ctx):
     await ctx.message.delete()
 
-    result = red.get("wallpaper")
+    result = red.get("wallpaper", 30)
     title = result[0]
     url = result[1]
     id = result[2]
+    author = result[4]
 
     write_in_txt(str(id), "reddit_data.txt")
-    await ctx.send(f"**Voici un post sur r/Wallpaper:**\n{title}\n\n{url}\n(ID: {id})")
+    await ctx.send(f"**Voici le dernier post sur r/Wallpaper par u/{author}:**\n{title}\n\n{url}\n(ID: {id})")
 
-@bot.command()
+@bot.command(name="honkai")
 async def honkai(ctx):
     await ctx.message.delete()
 
-    result = red.get("houkai3rd")
+    result = red.get("houkai3rd", 30)
     title = result[0]
     url = result[1]
     id = result[2]
+    nsfw = result[3]
+    author = result[4]
 
+    if nsfw == "True":
+        if not ctx.channel.is_nsfw():
+            await ctx.send("<:nsfw:719673214644781056> Ce post contient du contenu NSFW, pour voir ce contenu, utilise la commande dans un salon NSFW (Je t'ai envoyé l'URL en privé).")
+            await ctx.author.send(f"Lien:\n{url}")
+            return
     write_in_txt(str(id), "reddit_data.txt")
-    await ctx.send(f"**Voici un post sur r/Houkai3rd:**\n{title}\n\n{url}\n(ID: {id})")
+    await ctx.send(f"**Voici le dernier post sur r/Houkai3rd par u/{author}:**\n{title}\n\n{url}\n(ID: {id})")
 
 @bot.command()
 async def crappy(ctx):
     await ctx.message.delete()
 
-    result = red.get("crappydesign")
+    result = red.get("crappydesign", 30)
     title = result[0]
     url = result[1]
     id = result[2]
+    author = result[4]
 
     write_in_txt(str(id), "reddit_data.txt")
-    await ctx.send(f"**Voici un post sur r/CrappyDesign:**\n{title}\n\n{url}\n(ID: {id})")
+    await ctx.send(f"**Voici le dernier post sur r/CrappyDesign par u/{author}:**\n{title}\n\n{url}\n(ID: {id})")
 
 @bot.command(name='upvote', aliases=['up'])
 async def upvote(ctx):
@@ -331,11 +328,20 @@ async def upvote(ctx):
         score = int(result)
         await ctx.send(f"Le post a bien été upvoté ! (Score: {score})")
 
-@bot.command()
+@bot.command(name="score")
 async def score(ctx, id):
     await ctx.message.delete()
     score = red.score(id)
     await ctx.send(f"Le score du post est de {score}")
+    
+@bot.command(name="comments")
+async def com(ctx, id):
+    await ctx.message.delete()
+    comments = red.get_comments(id)
+    if comments == False:
+        await ctx.send("Ce post ne possède aucun commentaires.")
+        return
+    await ctx.send(Embed=comments)
 
 
 # Time function
@@ -378,25 +384,56 @@ async def nick(ctx, *arg):
 
 # Download and convert a video and return an URL
 @bot.command(name="dlYoutube", aliases=['dlyt', 'ytdl'])
-async def dlYoutube(ctx, url, format="mp3"):
+async def dlYoutube(ctx, format="mp3", *content):
     await ctx.message.delete()
+    query = ' '.join(content)
+    list_format = ["mp3", "ogg", "mkv"]
+    if format not in list_format:
+        await ctx.send("Désolée, je ne connais pas ce format de fichier...")
+
+    search_msg = await ctx.send("<a:search:944484192018903060> Recherche de la vidéo sur YouTube en cours...")
+    check_url = validators.url(query)
+    if check_url == True:
+        id, title = get_video_data(query, ydl_mp3, False)
+        url = query
+    else:
+        id, title = get_video_data(query, ydl_mp3, True)
+        url = f"https://www.youtube.com/watch?v={id}"
+        
+    thumbnail_url = f"https://i.ytimg.com/vi/{id}/maxresdefault.jpg"
+    with open("image.png", "wb") as f:
+        image = requests.get(thumbnail_url)
+        f.write(image.content)
+    await search_msg.delete()
 
     if format == "mkv":
-        video_id, video_title = get_video_id(url, ydl_mkv)
-        file_exist = os.path.exists(f"/var/www/html/youtube_videos/{video_id}.{format}")
+        file_exist = os.path.exists(f"/var/www/html/youtube_videos/{id}.{format}")
     else:
-        video_id, video_title = get_video_id(url, ydl_mp3)
-        file_exist = os.path.exists(f"/var/www/html/youtube_audios/{video_id}.{format}")
-    
+        file_exist = os.path.exists(f"/var/www/html/youtube_audios/{id}.{format}")
+
     if file_exist == False:
-        message = await ctx.send("Le téléchargement est en cours, je ne serais plus disponible...")
-        youtube_audio_downloader(url, format)
-        await message.delete()
+        downloading = discord.Embed(title="<a:search:944484192018903060> Téléchargement en cours...", description="Téléchargement et conversion de la vidéo\nJe ne suis pas encore multi-tâche donc je ne serais plus disponible.", color=0xFF0000)
+        downloading.add_field(name="Titre de la vidéo:", value=title)
+        downloading.set_image(url="attachment://image.png")
+        msg = await ctx.channel.send(file=discord.File("/home/Tintin/Desktop/Kiri-chan/image.png", filename="image.png"), embed=downloading)
 
+        youtube_audio_downloader(url, format)
+        await msg.delete()
+        
+    # Domiant Color
+    color_thief = ColorThief('image.png')
+    col = color_thief.get_color(quality=9)
+    color = discord.Colour.from_rgb(col[0], col[1], col[2])
+    
+    dl_succesfull = discord.Embed(title="<a:valid:945123025798439003> Téléchargement terminé !", description="Le téléchargement de la vidéo est terminée.", color=color)
+    dl_succesfull.add_field(name="Titre de la vidéo:", value=title)
     if format == "mkv":
-        await ctx.send(f"Voici l'URL du fichier: http://91.174.152.111:35080/youtube_videos/{video_id}.{format}")
+        dl_succesfull.add_field(name="Lien de la vidéo:", value=f"http://91.174.152.111:35080/youtube_videos/{id}.{format}", inline=False)
     else:
-        await ctx.send(f"Voici l'URL du fichier: http://91.174.152.111:35080/youtube_audios/{video_id}.{format}")
+        dl_succesfull.add_field(name="Lien de la vidéo:", value=f"http://91.174.152.111:35080/youtube_audios/{id}.{format}", inline=False)
+    dl_succesfull.add_field(name="Lien de la miniature:", value=f"{thumbnail_url}", inline=False)
+    dl_succesfull.set_image(url="attachment://image.png")
+    await ctx.channel.send(file=discord.File("/home/Tintin/Desktop/Kiri-chan/image.png", filename="image.png"), embed=dl_succesfull)
 
 # Same as dlYoutube but play it in voice channel
 @bot.command(name="play")
@@ -414,13 +451,20 @@ async def play(ctx, *content):
         id, title = get_video_data(query, ydl_mp3, True)
         url = f"https://www.youtube.com/watch?v={id}"
         
-    thumbnail = f"(https://i.ytimg.com/vi/{id}/maxresdefault.jpg)"
+    with open("image.png", "wb") as f:
+        image = requests.get(f"https://i.ytimg.com/vi/{id}/maxresdefault.jpg")
+        f.write(image.content)
     await search_msg.delete()
+
     file_exist = os.path.exists(f"{save_path}{id}.mp3")
     if file_exist == False:
-        message = await ctx.send(f"Téléchargement et conversion de la vidéo:\n**{title}**\nJe ne suis pas encore multi-tâche donc je ne serais plus disponible.\n{thumbnail}")
+        downloading = discord.Embed(title="<a:search:944484192018903060> Téléchargement en cours...", description="Téléchargement et conversion de la vidéo\nJe ne suis pas encore multi-tâche donc je ne serais plus disponible.", color=0xFF0000)
+        downloading.add_field(name="Titre de la vidéo:", value=title)
+        downloading.set_image(url="attachment://image.png")
+        msg = await ctx.channel.send(file=discord.File("/home/Tintin/Desktop/Kiri-chan/image.png", filename="image.png"), embed=downloading)
+
         youtube_audio_downloader(url, "mp3")
-        await message.delete()
+        await msg.delete()
 
     channel = ctx.message.author.voice.channel
     global voice
@@ -431,8 +475,20 @@ async def play(ctx, *content):
     if voice.is_playing():
         voice.stop()
     voice.play(discord.FFmpegPCMAudio(f"{save_path}{id}.mp3"))
-    await ctx.send(f"Lecture de la vidéo:\n**{title}**\n{thumbnail}")
+
+    # Domiant Color
+    color_thief = ColorThief('image.png')
+    col = color_thief.get_color(quality=9)
+    color = discord.Colour.from_rgb(col[0], col[1], col[2])
+    
+    play_msg = discord.Embed(title="<a:valid:945123025798439003> Téléchargement terminé", description=f"Lecture de la vidéo dans le salon **{voice.channel.name}**.", color=color)
+    play_msg.add_field(name="Titre de la vidéo:", value=title)
+    play_msg.set_image(url="attachment://image.png")
+    await ctx.channel.send(file=discord.File("/home/Tintin/Desktop/Kiri-chan/image.png", filename="image.png"), embed=play_msg)
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name=title))
+
+    global current_url
+    current_url = f"{save_path}{id}.mp3"
 
 # Stop the music
 @bot.command(name='stop', aliases=['s'])
@@ -452,7 +508,10 @@ async def dream(ctx):
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="la musique de Dream."))
     channel = ctx.message.author.voice.channel
     global voice
-    voice = await channel.connect()
+    try:
+        voice = await channel.connect()
+    except:
+        pass
     if voice.is_playing():
         voice.stop()
     voice.play(discord.FFmpegPCMAudio(f"{save_path}dream.mp3"))
@@ -464,8 +523,11 @@ async def segs(ctx):
     
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="SEEEEEEEGGGGSSS !!!!"))
     channel = ctx.message.author.voice.channel
-    global voiceS
-    voice = await channel.connect()
+    global voice
+    try:
+        voice = await channel.connect()
+    except:
+        pass
     if voice.is_playing():
         voice.stop()
     voice.play(discord.FFmpegPCMAudio(f"{save_path}segs.mp3"))
@@ -488,10 +550,24 @@ async def resume(ctx):
     except:
         pass
 
+# Platlist function
+@bot.command(name="rewind", aliases=['restart'])
+async def retour_au_debut(ctx):
+    await ctx.message.delete()
+
+    if voice.is_playing():
+        voice.stop()
+    else:
+        await ctx.send("Aucune musique n'est joue actuellement.")
+        return
+    voice.play(discord.FFmpegPCMAudio(current_url, before_options="-ss 00:00:00.00"))
+
 # Kiri-chan quit the voice channel
 @bot.command(name='disconnect', aliases=['leave', 'dis'])
 async def disconnect(ctx):
     await ctx.message.delete()
+    if ctx.message.author.id == 370169515515838465:
+        return
     try:
         await ctx.voice_client.disconnect()
     except:
@@ -511,16 +587,18 @@ async def tweet(ctx, *msg):
 async def timeline(ctx):
     if ctx.author.id in listmod:
         timeline = tw.get_timeline()
+        embed = discord.Embed(title="Timeline", color=0x1a8cd8)
         for user, content in timeline.items():
-            await ctx.send(f"{user}:\n{content}")
+            embed.add_field(name=f"Tweet de {user}", value=content, inline=False)
+
+        await ctx.send(embed=embed)
 
 
 # Pybooru function | Safebooru
-@bot.command(name='safebooru')
-async def safe_search(ctx, search="default"):
+#@bot.command(name='safebooru')
+#async def safe_search(ctx, search="default"):
     #result = booru.search_safebooru(search)
     #await ctx.send(result)
-    pass
 
 
 # Delete Messages Function
@@ -549,102 +627,41 @@ async def delete(ctx, id):
 
 
 # Help functions
-@bot.command()
+@bot.command(name="help")
 async def help(ctx):
     await ctx.message.delete()
-    embedMsg = discord.Embed(title="Liste des commandes", description="Liste de toutes les catégories", color=0xffffff)
-    embedMsg.add_field(name="Reddit", value="-helpReddit", inline=False)
-    embedMsg.add_field(name="Musiques", value="-helpMusic", inline=False)
-    embedMsg.add_field(name="Sites Web", value="-helpWeb", inline=False)
-    embedMsg.add_field(name="Features", value="-helpFeatures", inline=False)
-    embedMsg.add_field(name="Outils", value="-helpTools", inline=False)
-    embedMsg.add_field(name="Administratif", value="-helpAdmin", inline=False)
+    message = list_of_things.get_help()
+    await ctx.channel.send(embed=message)
 
-    await ctx.channel.send(embed=embedMsg)
-
-@bot.command()
+@bot.command(name="helpReddit", aliases=['helpreddit'])
 async def helpReddit(ctx):
     await ctx.message.delete()
-    
-    embedMsg = discord.Embed(title="Reddit", description="Liste des commandes pour Reddit", color=0xff4300)
-    embedMsg.add_field(name="-last [nom du subreddit]", value="Obtiens le dernier post d'un subreddit")
-    embedMsg.add_field(name="-hot [nom du subreddit]", value="Obtiens un post populaire au hasard d'un subreddit")
-    embedMsg.add_field(name="-fakehistory", value="Retourne un post du subreddit r/FakeHistoryPorn")
-    embedMsg.add_field(name="-wallpaper", value="Retourne un post du subreddit r/Wallpaper")
-    embedMsg.add_field(name="-honkai", value="Affiche un post du subreddit r/Houkai3rd")
-    embedMsg.add_field(name="-crappy", value="Affiche un post du subreddit r/CrappyDesign")
-    embedMsg.add_field(name="-upvote", value="Upvote le dernier post que j'affiche")
-    embedMsg.add_field(name="-score [post]", value="Affiche le score du post")
+    message = list_of_things.get_help_reddit()
+    await ctx.channel.send(embed=message)
 
-    await ctx.channel.send(embed=embedMsg)
-
-@bot.command()
-async def helpMusic(ctx):
+@bot.command(name="helpYoutube", aliases=['helpyoutube', 'helpYT'])
+async def helpYoutube(ctx):
     await ctx.message.delete()
+    message = list_of_things.get_help_youtube()
+    await ctx.channel.send(embed=message)
 
-    embedMsg = discord.Embed(title="Youtube", description="Liste des commandes pour Youtube", color=0xFF0000)
-    embedMsg.add_field(name="-ytdl [url] [format]", value="Télécharge une vidéo Youtube (formzts disponibles: MP3, OOG, MKV)")
-    embedMsg.add_field(name="-play [recherche ou url]", value="Joue une musique depuis Youtube dans un salon vocal")
-    embedMsg.add_field(name="-pause", value="Met en pause la musique")
-    embedMsg.add_field(name="-stop", value="Arrête la musique en cours")
-    embedMsg.add_field(name="-resume", value="Reprends la musique là où tu l'avais arrêtée")
-    embedMsg.add_field(name="-cheh", value="Quand le karma est contre toi...")
-    embedMsg.add_field(name="-dream", value="Joue la musique de Dream dans un salon vocal")
-    embedMsg.add_field(name="-segs", value="SEEEEEGGGGGGSSS !")
-    embedMsg.add_field(name="-disconnect", value="Je quitte le salon vocal")
-
-    await ctx.channel.send(embed=embedMsg)
-
-@bot.command()
-async def helpWeb(ctx):
-    await ctx.message.delete()
-
-    embedMsg = discord.Embed(title="Sites Web", description="Liste des commandes pour les sites web", color=0x1d2333)
-    embedMsg.add_field(name="-terrePlate", value="Je t'envoie l'adresse du site web de mon créateur")
-    embedMsg.add_field(name="-jimmy", value="Je t'envoie l'URL de Jimmy RPG")
-
-    await ctx.channel.send(embed=embedMsg)
-
-@bot.command()
+@bot.command(name="helpFeatures")
 async def helpFeatures(ctx):
     await ctx.message.delete()
-
-    embedMsg = discord.Embed(title="Features", description="Liste des commandes pour les features", color=0xed8a09)
-    embedMsg.add_field(name="-poyo", value="POYO !")
-    embedMsg.add_field(name="-pseudo [pseudonyme]", value="Change mon pseudo")
-    embedMsg.add_field(name="-nick [pseudonyme]", value="Change ton pseudo si j'ai les per")
-    embedMsg.add_field(name="-datetime", value="Je te donne l'heure")
-    embedMsg.add_field(name="-randomNum [valeur 1] [valeur 2]", value="Je te donne un nombre aléatoire entre deux valeurs")
-
-    await ctx.channel.send(embed=embedMsg)
+    message = list_of_things.get_help_features()
+    await ctx.channel.send(embed=message)
 
 @bot.command(name="helpOutils", aliases=['helpTools'])
 async def helpOutils(ctx):
     await ctx.message.delete()
-
-    embedMsg = discord.Embed(title="Outils", description="Liste des commandes pour les outils", color=0x6d6d6d)
-    embedMsg.add_field(name="-ping", value="Affiche la latence")
-    embedMsg.add_field(name="-info", value="Obtiens des infos sur moi")
-    embedMsg.add_field(name="-version", value="Obtiens le numéro de version")
-    embedMsg.add_field(name="-github", value="Lien vers le repo sur GitHub.")
-
-    await ctx.channel.send(embed=embedMsg)
+    message = list_of_things.get_help_tools()
+    await ctx.channel.send(embed=message)
 
 @bot.command()
 async def helpAdmin(ctx):
     await ctx.message.delete()
-
-    embedMsg = discord.Embed(title="Admin", description="Liste des commandes uniquement pour les modérateurs", color=0xff00fa)
-    embedMsg.add_field(name="-mpSet [ID utilisateur]", value="Permet de définir à qui j'envoie le Message Privé")
-    embedMsg.add_field(name="-mp [contenu du message]", value="J'envoie le contenu de ton message")
-    embedMsg.add_field(name="-join", value="Je rejoins le salon vocal dans lequel tu est connecté")
-    embedMsg.add_field(name="-online [type] [message]", value="Je suis connectée")
-    embedMsg.add_field(name="-idle [type] [message]", value="Je deviens inactive")
-    embedMsg.add_field(name="-dnd [type] [message]", value="Ne me dérange pas")
-    embedMsg.add_field(name="-invisible", value="Mais t'es pas là, mais t'es où ?")
-    embedMsg.add_field(name="-shutdown", value="Arrêt du bot")
-
-    await ctx.channel.send(embed=embedMsg)
+    message = list_of_things.get_help_admin()
+    await ctx.channel.send(embed=message)
 
 
 # Shutdown the bot
@@ -661,19 +678,22 @@ async def shutdown(ctx):
 
 @bot.command(name="informations", aliases=['info'])
 async def informations(ctx):
-    await ctx.channel.send('Je suis une bot encore en développement créée par Tintin.exe#6912 !')
+    await ctx.channel.send('Je suis une bot encore en développement créée par NekoTintin.exe#6912 !')
     await ctx.message.delete()
 
 @bot.command(name="version", aliases=['ver'])
 async def version(ctx):
-    global ver
     await ctx.message.delete()
     await ctx.send(f"Je suis en version {ver} !")
 
 
 @bot.command(name="online")
-async def online(ctx, activity="watch", message=online_message):
+async def online(ctx, activity="watch", *msg):
     await ctx.message.delete()
+    message = ' '.join(msg)
+    if message == None:
+        message = online_message
+    
     if ctx.message.author.id not in listmod:
         await ctx.send("Tu n'a pas l'autorisation de changer mon statut")
         return
@@ -687,8 +707,12 @@ async def online(ctx, activity="watch", message=online_message):
         await bot.change_presence(status=discord.Status.online, activity=discord.Game(name=message))
 
 @bot.command(name="idle")
-async def idle(ctx, activity="watch", message="Splatoon 2 ou à Pokémon"):
+async def idle(ctx, activity="watch", *msg):
     await ctx.message.delete()
+    message = ' '.join(msg)
+    if message == None:
+        message = "Splatoon 2 ou à Pokémon"
+    
     if ctx.message.author.id not in listmod:
         await ctx.send("Tu n'a pas l'autorisation de changer mon statut")
         return
@@ -702,8 +726,12 @@ async def idle(ctx, activity="watch", message="Splatoon 2 ou à Pokémon"):
         await bot.change_presence(status=discord.Status.idle, activity=discord.Game(name=message))
 
 @bot.command(name='dnd', aliases=['doNotDisturb', 'donotDisturb', 'donotdisturb'])
-async def dnd(ctx, activity="watch", message="un anime (c\'est sympa Assassination Classroom !)"):
+async def dnd(ctx, activity="watch", *msg):
     await ctx.message.delete()
+    message = ' '.join(msg)
+    if message == None:
+        message = "un anime (c\'est sympa Assassination Classroom !)"
+    
     if ctx.message.author.id not in listmod:
         await ctx.send("Tu n'a pas l'autorisation de changer mon statut")
         return
@@ -830,6 +858,10 @@ async def on_command_error(ctx, error):
             await ctx.send("Désolée, je ne connais pas cette commande ou celle-ci a plantée...\n")
             print("**Command Error:**\n " + ctx.message.content)
             print(str(error))
+            
+@bot.command()
+async def pv(ctx, id):
+    await ctx.message.author.de
         
 
 # Start | YATTA !
