@@ -50,3 +50,4 @@ logs
 __pycache__/list_of_things.cpython-39.pyc
 not_important.py
 image.png
+nohup.out

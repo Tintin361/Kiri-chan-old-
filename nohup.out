@@ -1,281 +1,0 @@
-python3: can't open file '/home/Tintin/Desktop/Kiri-chan/main.n.py': [Errno 2] No such file or directory
-Connecté en tant que: [36mKiri-chan#7337[0m - Kiri-chan prête !
-Version Python: 3.9.2 - Version Discord.py: 1.7.3 - Version du bot: 1.2.6
-[33mNekoTintin#6912[0m: -help
-[33mNekoTintin#6912[0m: -help
-Connecté en tant que: [36mKiri-chan#7337[0m - Kiri-chan prête !
-Version Python: 3.9.2 - Version Discord.py: 1.7.3 - Version du bot: 1.2.6
-[33mNekoTintin#6912[0m: -ver
-Traceback (most recent call last):
-  File "/home/Tintin/Desktop/Kiri-chan/main.py", line 11, in <module>
-    import reddit as red
-  File "/home/Tintin/Desktop/Kiri-chan/reddit.py", line 112, in <module>
-    get_comments("3jjhl")
-  File "/home/Tintin/Desktop/Kiri-chan/reddit.py", line 95, in get_comments
-    top_com = list(post.comments)
-  File "/home/Tintin/.local/lib/python3.9/site-packages/praw/models/reddit/base.py", line 34, in __getattr__
-    self._fetch()
-  File "/home/Tintin/.local/lib/python3.9/site-packages/praw/models/reddit/submission.py", line 629, in _fetch
-    data = self._fetch_data()
-  File "/home/Tintin/.local/lib/python3.9/site-packages/praw/models/reddit/submission.py", line 626, in _fetch_data
-    return self._reddit.request("GET", path, params)
-  File "/home/Tintin/.local/lib/python3.9/site-packages/praw/reddit.py", line 885, in request
-    return self._core.request(
-  File "/home/Tintin/.local/lib/python3.9/site-packages/prawcore/sessions.py", line 330, in request
-    return self._request_with_retries(
-  File "/home/Tintin/.local/lib/python3.9/site-packages/prawcore/sessions.py", line 266, in _request_with_retries
-    raise self.STATUS_EXCEPTIONS[response.status_code](response)
-prawcore.exceptions.NotFound: received 404 HTTP response
-Traceback (most recent call last):
-  File "/home/Tintin/Desktop/Kiri-chan/main.py", line 11, in <module>
-    import reddit as red
-  File "/home/Tintin/Desktop/Kiri-chan/reddit.py", line 112, in <module>
-    get_comments("3jjhl")
-  File "/home/Tintin/Desktop/Kiri-chan/reddit.py", line 95, in get_comments
-    top_com = list(post.comments)
-  File "/home/Tintin/.local/lib/python3.9/site-packages/praw/models/reddit/base.py", line 34, in __getattr__
-    self._fetch()
-  File "/home/Tintin/.local/lib/python3.9/site-packages/praw/models/reddit/submission.py", line 629, in _fetch
-    data = self._fetch_data()
-  File "/home/Tintin/.local/lib/python3.9/site-packages/praw/models/reddit/submission.py", line 626, in _fetch_data
-    return self._reddit.request("GET", path, params)
-  File "/home/Tintin/.local/lib/python3.9/site-packages/praw/reddit.py", line 885, in request
-    return self._core.request(
-  File "/home/Tintin/.local/lib/python3.9/site-packages/prawcore/sessions.py", line 330, in request
-    return self._request_with_retries(
-  File "/home/Tintin/.local/lib/python3.9/site-packages/prawcore/sessions.py", line 266, in _request_with_retries
-    raise self.STATUS_EXCEPTIONS[response.status_code](response)
-prawcore.exceptions.NotFound: received 404 HTTP response
-Traceback (most recent call last):
-  File "/home/Tintin/Desktop/Kiri-chan/main.py", line 11, in <module>
-    import reddit as red
-  File "/home/Tintin/Desktop/Kiri-chan/reddit.py", line 112, in <module>
-    get_comments("3jjhl")
-  File "/home/Tintin/Desktop/Kiri-chan/reddit.py", line 95, in get_comments
-    top_com = list(post.comments)
-  File "/home/Tintin/.local/lib/python3.9/site-packages/praw/models/reddit/base.py", line 34, in __getattr__
-    self._fetch()
-  File "/home/Tintin/.local/lib/python3.9/site-packages/praw/models/reddit/submission.py", line 629, in _fetch
-    data = self._fetch_data()
-  File "/home/Tintin/.local/lib/python3.9/site-packages/praw/models/reddit/submission.py", line 626, in _fetch_data
-    return self._reddit.request("GET", path, params)
-  File "/home/Tintin/.local/lib/python3.9/site-packages/praw/reddit.py", line 885, in request
-    return self._core.request(
-  File "/home/Tintin/.local/lib/python3.9/site-packages/prawcore/sessions.py", line 330, in request
-    return self._request_with_retries(
-  File "/home/Tintin/.local/lib/python3.9/site-packages/prawcore/sessions.py", line 266, in _request_with_retries
-    raise self.STATUS_EXCEPTIONS[response.status_code](response)
-prawcore.exceptions.NotFound: received 404 HTTP response
-Connecté en tant que: [36mKiri-chan#7337[0m - Kiri-chan prête !
-Version Python: 3.9.2 - Version Discord.py: 1.7.3 - Version du bot: 1.2.7
-[33mNekoTintin#6912[0m: -ver
-[33mNekoTintin#6912[0m: -wallpaper
-**Command Error:**
--wallpaper
-Command raised an exception: TypeError: 'NoneType' object is not subscriptable
-[33mNekoTintin#6912[0m: -honkai
-[34mVavoune#7688[0m: -1400 euros sheeeesh
-**Command Error:**
- -1400 euros sheeeesh
-Command "1400" is not found
-[33mNekoTintin#6912[0m: -dream
-**Command Error:**
--dream
-Command raised an exception: AttributeError: 'NoneType' object has no attribute 'is_playing'
-[download] Downloading playlist: bad apple
-Connecté en tant que: [36mKiri-chan#7337[0m - Kiri-chan prête !
-Version Python: 3.9.2 - Version Discord.py: 1.7.3 - Version du bot: 1.2.7
-[33mNekoTintin#6912[0m: -dream
-**Command Error:**
--dream
-Command raised an exception: AttributeError: 'NoneType' object has no attribute 'is_playing'
-[33mNekoTintin#6912[0m: -play bad apple
-[youtube:search] query "bad apple" page 1: Downloading API JSON
-[youtube:search] playlist bad apple: Downloading 1 videos
-[download] Downloading video 1 of 1
-[youtube] 9lNZ_Rnr7Jc: Downloading webpage
-[youtube] 9lNZ_Rnr7Jc: Downloading android player API JSON
-[download] Finished downloading playlist: bad apple
-**Command Error:**
--play bad apple
-Command raised an exception: AttributeError: 'NoneType' object has no attribute 'is_playing'
-[33mNekoTintin#6912[0m: -join
-**Command Error:**
--join
-Command raised an exception: RuntimeError: PyNaCl library needed in order to use voice
-[33mNekoTintin#6912[0m: -join
-**Command Error:**
--join
-Command raised an exception: RuntimeError: PyNaCl library needed in order to use voice
-[youtube] ghADeLDE3N4: Downloading webpage
-Connecté en tant que: [36mKiri-chan#7337[0m - Kiri-chan prête !
-Version Python: 3.9.2 - Version Discord.py: 1.7.3 - Version du bot: 1.2.7
-[33mNekoTintin#6912[0m: -join
-[33mNekoTintin#6912[0m: -dream
-[33mNekoTintin#6912[0m: -play https://www.youtube.com/watch?v=ghADeLDE3N4
-[youtube] ghADeLDE3N4: Downloading android player API JSON
-[youtube] ghADeLDE3N4: Downloading webpage
-[youtube] ghADeLDE3N4: Downloading android player API JSON
-[info] ghADeLDE3N4: Downloading 1 format(s): 251
-[download] Destination: /var/www/html/youtube_audios/ghADeLDE3N4.webm
-[download]   0.0% of 2.03MiB at 178.18KiB/s ETA 00:11[download]   0.1% of 2.03MiB at 473.72KiB/s ETA 00:04[download]   0.3% of 2.03MiB at 1015.15KiB/s ETA 00:02[download]   0.7% of 2.03MiB at  1.95MiB/s ETA 00:01  [download]   1.5% of 2.03MiB at  1.33MiB/s ETA 00:01[download]   3.0% of 2.03MiB at  1.72MiB/s ETA 00:01[download]   6.1% of 2.03MiB at  1.77MiB/s ETA 00:01[download]  12.3% of 2.03MiB at  2.01MiB/s ETA 00:00[download]  24.6% of 2.03MiB at  1.80MiB/s ETA 00:00[download]  49.2% of 2.03MiB at  1.97MiB/s ETA 00:00[download]  98.4% of 2.03MiB at  2.12MiB/s ETA 00:00[download] 100% of 2.03MiB at  2.13MiB/s ETA 00:00  [download] 100% of 2.03MiB in 00:01               
-[ExtractAudio] Destination: /var/www/html/youtube_audios/ghADeLDE3N4.mp3
-Deleting original file /var/www/html/youtube_audios/ghADeLDE3N4.webm (pass -k to keep)
-[youtube] 6araOMWo4tc: Downloading webpage
-[33mNekoTintin#6912[0m: -deletev 952232391446003712
-**Command Error:**
--deletev 952232391446003712
-Command "deletev" is not found
-[33mNekoTintin#6912[0m: -delete 952232391446003712
-[33mNekoTintin#6912[0m: -delete 952234392380653630
-[33mNekoTintin#6912[0m: -play https://www.youtube.com/watch?v=6araOMWo4tc
-[youtube] 6araOMWo4tc: Downloading android player API JSON
-[youtube] 6araOMWo4tc: Downloading player 87b9576a
-[youtube] 6araOMWo4tc: Downloading webpage
-[youtube] 6araOMWo4tc: Downloading android player API JSON
-[info] 6araOMWo4tc: Downloading 1 format(s): 251
-[download] Destination: /var/www/html/youtube_audios/6araOMWo4tc.webm
-[download]   0.1% of 1.38MiB at 160.14KiB/s ETA 00:08[download]   0.2% of 1.38MiB at 428.19KiB/s ETA 00:03[download]   0.5% of 1.38MiB at 926.63KiB/s ETA 00:01[download]   1.1% of 1.38MiB at  1.80MiB/s ETA 00:00 [download]   2.2% of 1.38MiB at  1.78MiB/s ETA 00:00[download]   4.5% of 1.38MiB at  2.10MiB/s ETA 00:00[download]   9.0% of 1.38MiB at  2.29MiB/s ETA 00:00[download]  18.1% of 1.38MiB at  2.26MiB/s ETA 00:00[download]  36.2% of 1.38MiB at  2.19MiB/s ETA 00:00[download]  72.4% of 1.38MiB at  1.91MiB/s ETA 00:00[download] 100% of 1.38MiB at  1.95MiB/s ETA 00:00  [download] 100% of 1.38MiB in 00:00               
-[ExtractAudio] Destination: /var/www/html/youtube_audios/6araOMWo4tc.mp3
-Deleting original file /var/www/html/youtube_audios/6araOMWo4tc.webm (pass -k to keep)
-[download] Downloading playlist: persona chill music 0h30
-[33mNekoTintin#6912[0m: -play persona chill music 0h30
-[youtube:search] query "persona chill music 0h30" page 1: Downloading API JSON
-[youtube:search] playlist persona chill music 0h30: Downloading 1 videos
-[download] Downloading video 1 of 1
-[youtube] UCaMHSd0Gds: Downloading webpage
-[youtube] UCaMHSd0Gds: Downloading android player API JSON
-[download] Finished downloading playlist: persona chill music 0h30
-[youtube] UCaMHSd0Gds: Downloading webpage
-[youtube] UCaMHSd0Gds: Downloading android player API JSON
-[info] UCaMHSd0Gds: Downloading 1 format(s): 251
-[download] Destination: /var/www/html/youtube_audios/UCaMHSd0Gds.webm
-[download]   0.0% of 55.83MiB at 163.05KiB/s ETA 05:52[download]   0.0% of 55.83MiB at 437.03KiB/s ETA 02:11[download]   0.0% of 55.83MiB at 948.26KiB/s ETA 01:00[download]   0.0% of 55.83MiB at  1.83MiB/s ETA 00:30 [download]   0.1% of 55.83MiB at  1.67MiB/s ETA 00:33[download]   0.1% of 55.83MiB at  2.02MiB/s ETA 00:27[download]   0.2% of 55.83MiB at  2.19MiB/s ETA 00:25[download]   0.4% of 55.83MiB at  1.69MiB/s ETA 00:32[download]   0.9% of 55.83MiB at  2.37MiB/s ETA 00:23[download]   1.8% of 55.83MiB at  2.04MiB/s ETA 00:26[download]   3.6% of 55.83MiB at  2.08MiB/s ETA 00:25[download]   7.2% of 55.83MiB at  2.23MiB/s ETA 00:23[download]  11.5% of 55.83MiB at  2.26MiB/s ETA 00:21[download]  15.6% of 55.83MiB at  2.32MiB/s ETA 00:20[download]  17.2% of 55.83MiB at  2.34MiB/s ETA 00:19[download]  17.2% of 55.83MiB at 185.23KiB/s ETA 04:17[download]  17.2% of 55.83MiB at 454.58KiB/s ETA 01:44[download]  17.2% of 55.83MiB at 916.90KiB/s ETA 00:51[download]  17.2% of 55.83MiB at  1.68MiB/s ETA 00:27 [download]  17.2% of 55.83MiB at  1.65MiB/s ETA 00:28[download]  17.3% of 55.83MiB at  1.99MiB/s ETA 00:23[download]  17.4% of 55.83MiB at  2.22MiB/s ETA 00:20[download]  17.6% of 55.83MiB at  1.73MiB/s ETA 00:26[download]  18.1% of 55.83MiB at  2.35MiB/s ETA 00:19[download]  19.0% of 55.83MiB at  2.08MiB/s ETA 00:21[download]  20.8% of 55.83MiB at  2.13MiB/s ETA 00:20[download]  24.4% of 55.83MiB at  2.32MiB/s ETA 00:18[download]  28.9% of 55.83MiB at  2.38MiB/s ETA 00:16[download]  33.4% of 55.83MiB at  2.41MiB/s ETA 00:15[download]  34.6% of 55.83MiB at  2.42MiB/s ETA 00:15[download]  34.6% of 55.83MiB at 189.94KiB/s ETA 03:18[download]  34.6% of 55.83MiB at 461.32KiB/s ETA 01:21[download]  34.6% of 55.83MiB at 939.58KiB/s ETA 00:39[download]  34.6% of 55.83MiB at  1.73MiB/s ETA 00:21 [download]  34.7% of 55.83MiB at  1.71MiB/s ETA 00:21[download]  34.7% of 55.83MiB at  2.03MiB/s ETA 00:17[download]  34.8% of 55.83MiB at  2.22MiB/s ETA 00:16[download]  35.1% of 55.83MiB at  1.74MiB/s ETA 00:20[download]  35.5% of 55.83MiB at  2.41MiB/s ETA 00:14[download]  36.4% of 55.83MiB at  2.14MiB/s ETA 00:16[download]  38.2% of 55.83MiB at  2.12MiB/s ETA 00:16[download]  41.8% of 55.83MiB at  2.35MiB/s ETA 00:13[download]  46.5% of 55.83MiB at  2.40MiB/s ETA 00:12[download]  50.9% of 55.83MiB at  2.42MiB/s ETA 00:11[download]  52.3% of 55.83MiB at  2.44MiB/s ETA 00:10[download]  52.3% of 55.83MiB at 187.73KiB/s ETA 02:26[download]  52.3% of 55.83MiB at 461.50KiB/s ETA 00:59[download]  52.3% of 55.83MiB at 950.44KiB/s ETA 00:28[download]  52.3% of 55.83MiB at  1.76MiB/s ETA 00:15 [download]  52.3% of 55.83MiB at  1.77MiB/s ETA 00:15[download]  52.4% of 55.83MiB at  2.04MiB/s ETA 00:13[download]  52.5% of 55.83MiB at  2.23MiB/s ETA 00:11[download]  52.7% of 55.83MiB at  1.71MiB/s ETA 00:15[download]  53.2% of 55.83MiB at  2.15MiB/s ETA 00:12[download]  54.1% of 55.83MiB at  2.18MiB/s ETA 00:11[download]  55.9% of 55.83MiB at  2.18MiB/s ETA 00:11[download]  59.4% of 55.83MiB at  2.32MiB/s ETA 00:09[download]  63.9% of 55.83MiB at  2.37MiB/s ETA 00:08[download]  68.3% of 55.83MiB at  2.41MiB/s ETA 00:07[download]  69.8% of 55.83MiB at  2.43MiB/s ETA 00:06[download]  69.8% of 55.83MiB at 191.41KiB/s ETA 01:30[download]  69.8% of 55.83MiB at 463.94KiB/s ETA 00:37[download]  69.8% of 55.83MiB at 939.01KiB/s ETA 00:18[download]  69.9% of 55.83MiB at  1.72MiB/s ETA 00:09 [download]  69.9% of 55.83MiB at  1.71MiB/s ETA 00:09[download]  69.9% of 55.83MiB at  2.02MiB/s ETA 00:08[download]  70.1% of 55.83MiB at  2.23MiB/s ETA 00:07[download]  70.3% of 55.83MiB at  1.74MiB/s ETA 00:09[download]  70.7% of 55.83MiB at  2.41MiB/s ETA 00:06[download]  71.6% of 55.83MiB at  2.15MiB/s ETA 00:07[download]  73.4% of 55.83MiB at  2.15MiB/s ETA 00:06[download]  77.0% of 55.83MiB at  2.34MiB/s ETA 00:05[download]  81.6% of 55.83MiB at  2.39MiB/s ETA 00:04[download]  86.0% of 55.83MiB at  2.40MiB/s ETA 00:03[download]  87.6% of 55.83MiB at  2.42MiB/s ETA 00:02[download]  87.6% of 55.83MiB at 195.67KiB/s ETA 00:36[download]  87.6% of 55.83MiB at 469.86KiB/s ETA 00:15[download]  87.6% of 55.83MiB at 948.05KiB/s ETA 00:07[download]  87.6% of 55.83MiB at  1.73MiB/s ETA 00:03 [download]  87.7% of 55.83MiB at  1.69MiB/s ETA 00:04[download]  87.7% of 55.83MiB at  2.01MiB/s ETA 00:03[download]  87.8% of 55.83MiB at  2.22MiB/s ETA 00:03[download]  88.1% of 55.83MiB at  1.73MiB/s ETA 00:03[download]  88.5% of 55.83MiB at  2.41MiB/s ETA 00:02[download]  89.4% of 55.83MiB at  2.13MiB/s ETA 00:02[download]  91.2% of 55.83MiB at  2.12MiB/s ETA 00:02[download]  94.8% of 55.83MiB at  2.33MiB/s ETA 00:01[download]  99.4% of 55.83MiB at  2.38MiB/s ETA 00:00[download] 100% of 55.83MiB at  2.41MiB/s ETA 00:00  [download] 100% of 55.83MiB in 00:23               
-[ExtractAudio] Destination: /var/www/html/youtube_audios/UCaMHSd0Gds.mp3
-Deleting original file /var/www/html/youtube_audios/UCaMHSd0Gds.webm (pass -k to keep)
-[youtube] 5x6KGC8DZ7g: Downloading webpage
-Connecté en tant que: [36mKiri-chan#7337[0m - Kiri-chan prête !
-Version Python: 3.9.2 - Version Discord.py: 1.7.3 - Version du bot: 1.2.7
-[33mNekoTintin#6912[0m: -join
-[33mNekoTintin#6912[0m: -play https://www.youtube.com/watch?v=5x6KGC8DZ7g
-[youtube] 5x6KGC8DZ7g: Downloading android player API JSON
-[youtube] 5x6KGC8DZ7g: Downloading MPD manifest
-[youtube] 5x6KGC8DZ7g: Downloading MPD manifest
-[youtube] ktpvi80oNWc: Downloading webpage
-[33mNekoTintin#6912[0m: -play https://www.youtube.com/watch?v=ktpvi80oNWc
-[youtube] ktpvi80oNWc: Downloading android player API JSON
-[youtube] ktpvi80oNWc: Downloading webpage
-[youtube] ktpvi80oNWc: Downloading android player API JSON
-[info] ktpvi80oNWc: Downloading 1 format(s): 251
-[download] Destination: /var/www/html/youtube_audios/ktpvi80oNWc.webm
-[download]   0.0% of 3.86MiB at 213.65KiB/s ETA 00:18[download]   0.1% of 3.86MiB at 501.37KiB/s ETA 00:07[download]   0.2% of 3.86MiB at 999.19KiB/s ETA 00:03[download]   0.4% of 3.86MiB at  1.67MiB/s ETA 00:02 [download]   0.8% of 3.86MiB at  1.77MiB/s ETA 00:02[download]   1.6% of 3.86MiB at  2.01MiB/s ETA 00:01[download]   3.2% of 3.86MiB at  2.21MiB/s ETA 00:01[download]   6.5% of 3.86MiB at  1.65MiB/s ETA 00:02[download]  12.9% of 3.86MiB at  2.03MiB/s ETA 00:01[download]  25.9% of 3.86MiB at  2.01MiB/s ETA 00:01[download]  51.8% of 3.86MiB at  2.17MiB/s ETA 00:00[download] 100% of 3.86MiB at  2.29MiB/s ETA 00:00  [download] 100% of 3.86MiB in 00:01               
-[ExtractAudio] Destination: /var/www/html/youtube_audios/ktpvi80oNWc.mp3
-Deleting original file /var/www/html/youtube_audios/ktpvi80oNWc.webm (pass -k to keep)
-[youtube] AtDDE667prA: Downloading webpage
-[33mNekoTintin#6912[0m: -play https://www.youtube.com/watch?v=AtDDE667prA
-[youtube] AtDDE667prA: Downloading android player API JSON
-[youtube] AtDDE667prA: Downloading webpage
-[youtube] AtDDE667prA: Downloading android player API JSON
-[info] AtDDE667prA: Downloading 1 format(s): 251
-[download] Destination: /var/www/html/youtube_audios/AtDDE667prA.webm
-[download]   0.0% of 3.63MiB at 29.07KiB/s ETA 02:07[download]   0.1% of 3.63MiB at 85.32KiB/s ETA 00:43[download]   0.2% of 3.63MiB at 196.21KiB/s ETA 00:18[download]   0.4% of 3.63MiB at 413.83KiB/s ETA 00:08[download]   0.8% of 3.63MiB at 834.21KiB/s ETA 00:04[download]   1.7% of 3.63MiB at  1.03MiB/s ETA 00:03 [download]   3.4% of 3.63MiB at  1.32MiB/s ETA 00:02[download]   6.9% of 3.63MiB at  1.14MiB/s ETA 00:02[download]  13.7% of 3.63MiB at  1.59MiB/s ETA 00:01[download]  27.5% of 3.63MiB at  1.29MiB/s ETA 00:02[download]  55.1% of 3.63MiB at  1.56MiB/s ETA 00:01[download] 100% of 3.63MiB at  1.85MiB/s ETA 00:00  [download] 100% of 3.63MiB in 00:02               
-[ExtractAudio] Destination: /var/www/html/youtube_audios/AtDDE667prA.mp3
-Deleting original file /var/www/html/youtube_audios/AtDDE667prA.webm (pass -k to keep)
-[youtube] vfPs174ZhQM: Downloading webpage
-[33mNekoTintin#6912[0m: -play https://www.youtube.com/watch?v=vfPs174ZhQM
-[youtube] vfPs174ZhQM: Downloading android player API JSON
-[youtube] vfPs174ZhQM: Downloading MPD manifest
-[youtube] vfPs174ZhQM: Downloading MPD manifest
-WARNING: [youtube] Failed to download MPD manifest: <urlopen error _ssl.c:1106: The handshake operation timed out>
-[youtube] vfPs174ZhQM: Downloading webpage
-[youtube] vfPs174ZhQM: Downloading android player API JSON
-[youtube] vfPs174ZhQM: Downloading MPD manifest
-[youtube] vfPs174ZhQM: Downloading MPD manifest
-[info] vfPs174ZhQM: Downloading 1 format(s): 251
-[download] Destination: /var/www/html/youtube_audios/vfPs174ZhQM.webm
-[download]   0.1% of 1.38MiB at 30.44KiB/s ETA 00:46[download]   0.2% of 1.38MiB at 86.61KiB/s ETA 00:16[download]   0.5% of 1.38MiB at 193.76KiB/s ETA 00:07[download]   1.1% of 1.38MiB at 397.66KiB/s ETA 00:03[download]   2.2% of 1.38MiB at 162.47KiB/s ETA 00:08[download]   4.5% of 1.38MiB at 185.17KiB/s ETA 00:07[download]   9.0% of 1.38MiB at 205.86KiB/s ETA 00:06[download]  18.1% of 1.38MiB at 316.51KiB/s ETA 00:03[download]  36.2% of 1.38MiB at 400.38KiB/s ETA 00:02[download]  72.4% of 1.38MiB at 530.81KiB/s ETA 00:00[download] 100% of 1.38MiB at 606.93KiB/s ETA 00:00  [download] 100% of 1.38MiB in 00:03                
-[ExtractAudio] Destination: /var/www/html/youtube_audios/vfPs174ZhQM.mp3
-Deleting original file /var/www/html/youtube_audios/vfPs174ZhQM.webm (pass -k to keep)
-[youtube] vfPs174ZhQM: Downloading webpage
-**Command Error:**
--play https://www.youtube.com/watch?v=vfPs174ZhQM
-Command raised an exception: ClientException: Not connected to voice.
-[33mNekoTintin#6912[0m: -play https://www.youtube.com/watch?v=vfPs174ZhQM
-[youtube] vfPs174ZhQM: Downloading android player API JSON
-[youtube] vfPs174ZhQM: Downloading MPD manifest
-[youtube] vfPs174ZhQM: Downloading MPD manifest
-[youtube] vfPs174ZhQM: Downloading webpage
-**Command Error:**
--play https://www.youtube.com/watch?v=vfPs174ZhQM
-Command raised an exception: ClientException: Not connected to voice.
-[33mNekoTintin#6912[0m: -join
-**Command Error:**
--join
-Command raised an exception: ClientException: Already connected to a voice channel.
-[33mNekoTintin#6912[0m: -leave
-[33mNekoTintin#6912[0m: -play https://www.youtube.com/watch?v=vfPs174ZhQM
-[youtube] vfPs174ZhQM: Downloading android player API JSON
-[youtube] vfPs174ZhQM: Downloading MPD manifest
-[youtube] vfPs174ZhQM: Downloading MPD manifest
-[youtube] vfPs174ZhQM: Downloading webpage
-**Command Error:**
--play https://www.youtube.com/watch?v=vfPs174ZhQM
-Command raised an exception: ClientException: Not connected to voice.
-[33mNekoTintin#6912[0m: -play https://www.youtube.com/watch?v=vfPs174ZhQM
-[youtube] vfPs174ZhQM: Downloading android player API JSON
-[youtube] vfPs174ZhQM: Downloading MPD manifest
-[youtube] vfPs174ZhQM: Downloading MPD manifest
-[youtube] Iv3gxkZnj3w: Downloading webpage
-[33mNekoTintin#6912[0m: -play https://www.youtube.com/watch?v=Iv3gxkZnj3w
-[youtube] Iv3gxkZnj3w: Downloading android player API JSON
-[youtube] Iv3gxkZnj3w: Downloading MPD manifest
-[youtube] Iv3gxkZnj3w: Downloading MPD manifest
-[youtube] Iv3gxkZnj3w: Downloading webpage
-[youtube] Iv3gxkZnj3w: Downloading android player API JSON
-[youtube] Iv3gxkZnj3w: Downloading MPD manifest
-[youtube] Iv3gxkZnj3w: Downloading MPD manifest
-Task was destroyed but it is pending!
-task: <Task pending name='Task-530' coro=<Event.wait() running at /usr/lib/python3.9/asyncio/locks.py:226> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7fa45d4d60>()]>>
-Task was destroyed but it is pending!
-task: <Task pending name='Task-531' coro=<Event.wait() running at /usr/lib/python3.9/asyncio/locks.py:226> wait_for=<Future pending cb=[<TaskWakeupMethWrapper object at 0x7fa45d4eb0>()]>>
-[info] Iv3gxkZnj3w: Downloading 1 format(s): 251
-[download] Destination: /var/www/html/youtube_audios/Iv3gxkZnj3w.webm
-[download]   0.1% of 1.33MiB at 23.56KiB/s ETA 00:57[download]   0.2% of 1.33MiB at 69.51KiB/s ETA 00:19[download]   0.5% of 1.33MiB at 160.30KiB/s ETA 00:08[download]   1.1% of 1.33MiB at 339.10KiB/s ETA 00:03[download]   2.3% of 1.33MiB at 293.94KiB/s ETA 00:04[download]   4.6% of 1.33MiB at 321.42KiB/s ETA 00:04[download]   9.3% of 1.33MiB at 467.25KiB/s ETA 00:02[download]  18.7% of 1.33MiB at 662.49KiB/s ETA 00:01[download]  37.5% of 1.33MiB at 986.56KiB/s ETA 00:00[download]  75.1% of 1.33MiB at  1.26MiB/s ETA 00:00 [download] 100% of 1.33MiB at  1.37MiB/s ETA 00:00  [download] 100% of 1.33MiB in 00:02               
-[ExtractAudio] Destination: /var/www/html/youtube_audios/Iv3gxkZnj3w.mp3
-Deleting original file /var/www/html/youtube_audios/Iv3gxkZnj3w.webm (pass -k to keep)
-[youtube] V0gfc6m3qJg: Downloading webpage
-[33mNekoTintin#6912[0m: -dream
-[33mNekoTintin#6912[0m: -play https://www.youtube.com/watch?v=V0gfc6m3qJg
-[youtube] V0gfc6m3qJg: Downloading android player API JSON
-[youtube] V0gfc6m3qJg: Downloading webpage
-[youtube] V0gfc6m3qJg: Downloading android player API JSON
-[info] V0gfc6m3qJg: Downloading 1 format(s): 251
-[download] Destination: /var/www/html/youtube_audios/V0gfc6m3qJg.webm
-[download]   0.0% of 6.42MiB at 172.17KiB/s ETA 00:38[download]   0.0% of 6.42MiB at 457.05KiB/s ETA 00:14[download]   0.1% of 6.42MiB at 989.66KiB/s ETA 00:06[download]   0.2% of 6.42MiB at  1.92MiB/s ETA 00:03 [download]   0.5% of 6.42MiB at  1.54MiB/s ETA 00:04[download]   1.0% of 6.42MiB at  1.80MiB/s ETA 00:03[download]   1.9% of 6.42MiB at  1.89MiB/s ETA 00:03[download]   3.9% of 6.42MiB at  2.12MiB/s ETA 00:02[download]   7.8% of 6.42MiB at  2.13MiB/s ETA 00:02[download]  15.6% of 6.42MiB at  2.23MiB/s ETA 00:02[download]  31.1% of 6.42MiB at  2.28MiB/s ETA 00:01[download]  62.3% of 6.42MiB at  1.91MiB/s ETA 00:01[download]  88.0% of 6.42MiB at  1.66MiB/s ETA 00:00[download] 100% of 6.42MiB at  1.72MiB/s ETA 00:00  [download] 100% of 6.42MiB in 00:03               
-[ExtractAudio] Destination: /var/www/html/youtube_audios/V0gfc6m3qJg.mp3
-Deleting original file /var/www/html/youtube_audios/V0gfc6m3qJg.webm (pass -k to keep)
-[youtube] V0gfc6m3qJg: Downloading webpage
-**Command Error:**
--play https://www.youtube.com/watch?v=V0gfc6m3qJg
-Command raised an exception: ClientException: Not connected to voice.
-[33mNekoTintin#6912[0m: -play https://www.youtube.com/watch?v=V0gfc6m3qJg
-[youtube] V0gfc6m3qJg: Downloading android player API JSON
-[youtube] ytfdE0pxoMY: Downloading webpage
-[33mNekoTintin#6912[0m: -play https://www.youtube.com/watch?v=ytfdE0pxoMY
-[youtube] ytfdE0pxoMY: Downloading android player API JSON
-[youtube] 73XLX1Br9po: Downloading webpage
-[33mNekoTintin#6912[0m: -play https://www.youtube.com/watch?v=73XLX1Br9po
-[youtube] 73XLX1Br9po: Downloading android player API JSON
-[youtube] 73XLX1Br9po: Downloading webpage
-[youtube] 73XLX1Br9po: Downloading android player API JSON
-[info] 73XLX1Br9po: Downloading 1 format(s): 251
-[download] Destination: /var/www/html/youtube_audios/73XLX1Br9po.webm
-[download]   0.0% of 4.52MiB at 91.09KiB/s ETA 00:50[download]   0.1% of 4.52MiB at 257.20KiB/s ETA 00:18[download]   0.2% of 4.52MiB at 575.71KiB/s ETA 00:08[download]   0.3% of 4.52MiB at  1.15MiB/s ETA 00:03 [download]   0.7% of 4.52MiB at 314.68KiB/s ETA 00:14[download]   1.4% of 4.52MiB at 412.97KiB/s ETA 00:11[download]   2.7% of 4.52MiB at 512.59KiB/s ETA 00:08[download]   5.5% of 4.52MiB at 795.59KiB/s ETA 00:05[download]  11.0% of 4.52MiB at  1.14MiB/s ETA 00:03 [download]  22.1% of 4.52MiB at  1.38MiB/s ETA 00:02[download]  44.2% of 4.52MiB at  1.58MiB/s ETA 00:01[download]  84.8% of 4.52MiB at  1.82MiB/s ETA 00:00[download] 100% of 4.52MiB at  1.88MiB/s ETA 00:00  [download] 100% of 4.52MiB in 00:02               
-[ExtractAudio] Destination: /var/www/html/youtube_audios/73XLX1Br9po.mp3
-Deleting original file /var/www/html/youtube_audios/73XLX1Br9po.webm (pass -k to keep)
-[34mDaraka#0606[0m: -leave
-[33mNekoTintin#6912[0m: -ping
-[33mNekoTintin#6912[0m: -github
-[33mNekoTintin#6912[0m: -online watch le code très mauvais d'Hatsu
-[33mNekoTintin#6912[0m: -online
-[33mNekoTintin#6912[0m: -tl
