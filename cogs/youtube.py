@@ -1,4 +1,3 @@
-from sqlite3 import connect
 import yt_dlp as yt
 from validators import url as testUrl
 from requests import get
