@@ -3,12 +3,10 @@
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,linux
 
-### Linux ###
-history.txt
-last_message.txt
-reddit_data.txt
+# Pycache
 __pycache__
-logs
+tools/__pycache__
+cogs/__pycache__
 
 # temporary files which can be created if a process still has a handle open of a deleted file
 .fuse_hidden*
@@ -47,7 +45,9 @@ logs
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,linux
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
-__pycache__/list_of_things.cpython-39.pyc
-not_important.py
-image.png
+history.txt
+reddit.png
+youtube.png
+config.json
 nohup.out
+tools/passwords.py
