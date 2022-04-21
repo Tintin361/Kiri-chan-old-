@@ -1,10 +1,10 @@
+# -- coding: utf-8 --
 # Biblio de Discord
-import discord
 from discord.embeds import Embed
 from discord.ext import commands
 # Autres biblio
 from datetime import datetime
-import pytz
+from pytz import timezone
 from random import randint
 
 class Features(commands.Cog):
@@ -23,7 +23,7 @@ class Features(commands.Cog):
     @commands.command(name="datetime")
     async def datetime(self, ctx):
         await ctx.message.delete()
-        now = datetime.now(pytz.timezone('Europe/Paris'))
+        now = datetime.now(timezone('Europe/Paris'))
         time = now.strftime("%d/%m/%Y - %H:%M:%S")
         await ctx.send(f"On est le {time}")
         

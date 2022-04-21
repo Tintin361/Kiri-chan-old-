@@ -46,8 +46,5 @@ cogs/__pycache__
 
 # Custom rules (everything added below won't be overriden by 'Generate .gitignore File' if you use 'Update' option)
 history.txt
-reddit.png
-youtube.png
-config.json
-nohup.out
 tools/passwords.py
+images

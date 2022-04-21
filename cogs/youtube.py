@@ -66,12 +66,12 @@ class FromYoutube(commands.Cog, name="Youtube module"):
         search_msg = await ctx.send("<a:search:944484192018903060> Recherche de la vidéo sur YouTube en cours...")
         data = get_video_data(query)
     
-        thumb = "https://i.ytimg.com/vi/" + data["id"] + "/maxresdefault.jpg"
-        with open("youtube.png", "wb") as f:
+        thumb = "https://i.ytimg.com/vi_webp/" + data["id"] + "/maxresdefault.webp"
+        with open("/home/Tintin/Desktop/Kiri-chan/images/youtube.png", "wb") as f:
             image = get(url=thumb)
             f.write(image.content)
            
-        color_thief = thief("youtube.png")
+        color_thief = thief("/home/Tintin/Desktop/Kiri-chan/images/youtube.png")
         col = color_thief.get_color(quality=9)
         color = discord.Colour.from_rgb(col[0], col[1], col[2])
         
@@ -79,7 +79,7 @@ class FromYoutube(commands.Cog, name="Youtube module"):
         msg, image = generator.gen_embed_yt(
             {"title": data["title"],
             "description": f"Lecture de la vidéo dans le salon **{channel.name}**.",
-            "image": {"name": "youtube.png", "path": "/home/Tintin/Desktop/Kiri-chan/"},
+            "image": {"name": "youtube.png", "path": "/home/Tintin/Desktop/Kiri-chan/images/"},
             "color": color})
 
         voice = discord.utils.get(ctx.guild.voice_channels, name=channel.name)
@@ -88,7 +88,7 @@ class FromYoutube(commands.Cog, name="Youtube module"):
         else:
             await self.bot_voice.move_to(channel)
             
-        self.bot_voice = discord.utils.get(self.bot.voice_clients, guild=ctx.guild)
+        self.bot_voice = discord.utils.get(self.bot.voice_client, guild=ctx.guild)
         try:
             if self.bot_voice.is_playing():
                 self.bot_voice.stop()
@@ -177,8 +177,6 @@ class FromYoutube(commands.Cog, name="Youtube module"):
     @commands.command(name='disconnect', aliases=['leave', 'dis'])
     async def disconnect(self, ctx):
         await ctx.message.delete()
-        if ctx.message.author.id == 370169515515838465:
-            return
         try:
             await ctx.voice_client.disconnect()
         except:

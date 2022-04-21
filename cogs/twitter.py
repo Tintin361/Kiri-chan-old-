@@ -28,8 +28,9 @@ class Twitter(commands.Cog):
     @commands.command(name="tweet")
     async def tweet(self, ctx, *msg):
         await ctx.message.delete()
-        message = ' '.join(msg)
-        api.update_status(message)
+        if ctx.message.author == 443113150599004161:
+            message = ' '.join(msg)
+            api.update_status(message)
         
     # Affiche la timeline du compte @Kirlia-Chan
     @commands.command(name="timeline", aliases=["tl"])

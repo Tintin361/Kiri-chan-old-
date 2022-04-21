@@ -1,5 +1,5 @@
+# -- coding: utf-8 --
 # Biblio de Discord
-import discord
 from discord.ext import commands
 from discord.embeds import Embed
 # Module du bot

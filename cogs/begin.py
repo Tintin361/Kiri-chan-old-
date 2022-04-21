@@ -17,7 +17,7 @@ def get_time():
     return time
   
 class Begin(commands.Cog):
-    
+    # Fonction d'initialisation
     def __init__(self, bot) -> None:
         self.bot = bot
         
@@ -53,13 +53,6 @@ class Begin(commands.Cog):
     async def aide(self, ctx):
         await ctx.message.delete()
         await ctx.send(embed=get_help(kiri.get_modules()))
-
-    # Erreur de commande
-    @commands.Cog.listener()
-    async def on_command_error(self, ctx, error):
-        print(error)
-        emd = Embed(title="<:Erreur:945123023546093611> Commande inconnue", description="Désolée, je ne connais pas cette commande ou celle-ci a plantée...", color=0xe24647).add_field(name="Sortie:", value=str(error), inline=False)
-        await ctx.channel.send(embed=emd)
         
 def get_help(mod):
   embedMsg = Embed(title="Liste des commandes", description="Liste de toutes les catégories", color=0xffffff)
@@ -70,6 +63,8 @@ def get_help(mod):
     embedMsg.add_field(name="<:youtube:316620060221374466> Youtube", value="-helpYoutube", inline=False)
   if "twitter" in mod: 
     embedMsg.add_field(name="<a:Twitter:945123022329741332> Twitter", value="-helpTwitter", inline=False)
+  if "booru" in mod: 
+    embedMsg.add_field(name=":desktop: Booru", value="-helpBooru", inline=False)
   if "features" in mod:
     embedMsg.add_field(name=":robot: Features", value="-helpFeatures", inline=False)
   if "tools" in mod:

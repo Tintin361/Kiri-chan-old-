@@ -1,3 +1,4 @@
+# -- coding: utf-8 --
 # Importation de bibliothèques
 from discord.ext import commands
 from discord.embeds import Embed
@@ -190,14 +191,14 @@ def get_post(sub: str, sort: str, limit: int) -> dict:
     
     # Enregistre l'image du post, s'il y en a une
     if liste_message["url"].startswith("https://i.redd.it/"):
-        with open("reddit.png", "wb") as f:
+        with open("/home/Tintin/Desktop/Kiri-chan/images/reddit.png", "wb") as f:
             image = get(url=liste_message["url"])
             f.write(image.content)
         liste_message["image"] = {"name": "reddit.png",
-                                  "path": "/home/Tintin/Desktop/Kiri-chan/"}
+                                  "path": "/home/Tintin/Desktop/Kiri-chan/images/"}
             
         # Obtient la color dominante de l'image
-        color_thief = thief("reddit.png")
+        color_thief = thief("/home/Tintin/Desktop/Kiri-chan/images/reddit.png")
         temp = color_thief.get_color(quality=9)
         
         # La convertie en couleur pour Discord
